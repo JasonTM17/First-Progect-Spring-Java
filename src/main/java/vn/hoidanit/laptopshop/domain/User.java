@@ -36,7 +36,6 @@ public class User {
 
     private String address;
 
-    @NotNull
     private String phone;
 
     private String avatar;

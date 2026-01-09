@@ -9,7 +9,7 @@
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
                 <meta name="description" content="Nguyễn Sơn - Dự án laptopshop" />
-                <title>Detail User - Nguyễn Sơn</title>
+                <title>Delete User - Nguyễn Sơn</title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -21,32 +21,34 @@
                     <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
-                                <h1 class="mt-4">User Detail</h1>
+                                <h1 class="mt-4">Delete Product</h1>
                                 <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admin">Detail dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/user">Users</a></li>
-                                    <li class="breadcrumb-item active">View detail</li>
+                                    <li class="breadcrumb-item"><a href="/admin">Delete dashboard</a></li>
+                                    <li class="breadcrumb-item"><a href="/admin/product">Users</a></li>
+                                    <li class="breadcrumb-item active">Delete</li>
                                 </ol>
                                 <div class="container mt-5">
                                     <div class="row">
-                                        <div class="col-12 mx-auto">
+                                        <div class="col-md-6 col-12 mx-auto">
                                             <div class="d-flex justify-content-between">
-                                                <h3>User detail with id = ${id}</h3>
+                                                <h3>Delete the product with id = ${id}</h3>
                                             </div>
-                                            <hr />
-                                            <div class="card" style="width: 60%;">
-                                                <div class="card-header">
-                                                    User information
+                                            <hr>
+
+                                            <div class="alert alert-danger">
+                                                Are you sure you want to delete this product?
+                                            </div>
+
+                                            <form:form method="post" action="/admin/product/delete"
+                                                modelAttribute="newProduct">
+                                                <div class="mb-3" style="display: none;">
+                                                    <label class="form-label">Id:</label>
+                                                    <form:input type="text" class="form-control" path="id"
+                                                        value="${id}" />
                                                 </div>
-                                                <ul class="list-group list-group-flush">
-                                                    <li class="list-group-item">ID: ${user.id}</li>
-                                                    <li class="list-group-item">Role: ${user.role.name}</li>
-                                                    <li class="list-group-item">Email: ${user.email}</li>
-                                                    <li class="list-group-item">FullName: ${user.fullName}</li>
-                                                    <li class="list-group-item">Address: ${user.address}</li>
-                                                </ul>
-                                            </div>
-                                            <a href="/admin/user" class="btn btn-success mt-3">Back</a>
+
+                                                <button class="btn btn-danger">Confirm</button>
+                                            </form:form>
                                         </div>
                                     </div>
                                 </div>
