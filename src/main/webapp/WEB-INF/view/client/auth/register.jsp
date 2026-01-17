@@ -38,16 +38,22 @@
                                                         <form:errors path="email" cssClass="invalid-feedback" />
                                                     </c:set>
 
+                                                    <c:set var="errorFirstName">
+                                                        <form:errors path="firstName" cssClass="invalid-feedback" />
+                                                    </c:set>
+
 
                                                     <div class="row g-3">
 
                                                         <!-- First Name -->
                                                         <div class="col-md-6">
                                                             <div class="form-floating">
-                                                                <form:input class="form-control" type="text"
-                                                                    placeholder="Enter your first name"
+                                                                <form:input
+                                                                    class="form-control ${not empty errorFirstName ? 'is-invalid' : ''}"
+                                                                    type="text" placeholder="name@example.com"
                                                                     path="firstName" />
-                                                                <label for="inputFirstName">First name</label>
+                                                                <label>First Name</label>
+                                                                ${errorFirstName}
                                                             </div>
                                                         </div>
 
@@ -107,7 +113,7 @@
                                                 </form:form>
                                             </div>
                                             <div class="card-footer text-center py-3">
-                                                <div class="small"><a href="login.html">Have an account? Go to login</a>
+                                                <div class="small"><a href="/login">Have an account? Go to login</a>
                                                 </div>
                                             </div>
                                         </div>
