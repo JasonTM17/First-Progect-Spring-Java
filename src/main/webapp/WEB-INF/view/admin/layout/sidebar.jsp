@@ -24,10 +24,12 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Order
                         </a>
-
-
-
-
+                        <a class="nav-link" href="/admin/account">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-user-cog"></i>
+                            </div>
+                            Quản lý tài khoản
+                        </a>
 
                     </div>
                 </div>

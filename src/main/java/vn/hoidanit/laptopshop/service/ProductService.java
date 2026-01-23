@@ -56,7 +56,7 @@ public class ProductService {
         this.productRepository.deleteById(id);
     }
 
-    public void handleAddProductToCart(String email, long productId, HttpSession session) {
+    public void handleAddProductToCart(String email, long productId, HttpSession session, long quantity) {
         User user = this.userService.getUserByEmail(email);
         if (user != null) {
             Cart cart = this.cartRepository.findByUser(user);
@@ -68,8 +68,7 @@ public class ProductService {
                 cart = this.cartRepository.save(otherCart);
 
             }
-            Optional<Product> productOptional
-                    = this.productRepository.findById(productId);
+            Optional<Product> productOptional = this.productRepository.findById(productId);
 
             if (productOptional.isPresent()) {
                 Product realProduct = productOptional.get();
@@ -81,7 +80,7 @@ public class ProductService {
                     cd.setCart(cart);
                     cd.setProduct(realProduct);
                     cd.setPrice(realProduct.getPrice());
-                    cd.setQuantity(1);
+                    cd.setQuantity(quantity);
                     this.cartDetailRepository.save(cd);
 
                     //update cart(sum)
@@ -90,7 +89,7 @@ public class ProductService {
                     this.cartRepository.save(cart);
                     session.setAttribute("sum", s);
                 } else {
-                    oldDetail.setQuantity(oldDetail.getQuantity() + 1);
+                    oldDetail.setQuantity(oldDetail.getQuantity() + quantity);
                     this.cartDetailRepository.save(oldDetail);
                 }
             }
@@ -138,31 +137,33 @@ public class ProductService {
 
     public void handlePlaceOrder(User user, HttpSession session,
             String receiverName, String receiverAddress, String receiverPhone) {
-
-        // create order
-        Order order = new Order();
-        order.setUser(user);
-        order.setReceiverName(receiverName);
-        order.setReceiverAddress(receiverAddress);
-        order.setReceiverPhone(receiverPhone);
-
-        this.orderRepository.save(order);
-
-        // create orderDetail
         // step 1: get cart by user
         Cart cart = this.cartRepository.findByUser(user);
-
         if (cart != null) {
-
             List<CartDetail> cartDetails = cart.getCartDetails();
-
             if (cartDetails != null) {
+
+                // create order
+                Order order = new Order();
+                order.setUser(user);
+                order.setReceiverName(receiverName);
+                order.setReceiverAddress(receiverAddress);
+                order.setReceiverPhone(receiverPhone);
+                order.setStatus("PENDING");
+
+                double sum = 0;
+                for (CartDetail cd : cartDetails) {
+                    sum += cd.getPrice();
+                }
+                order.setTotalPrice(sum);
+                order = this.orderRepository.save(order);
+                // create orderDetail
                 for (CartDetail cd : cartDetails) {
                     OrderDetail orderDetail = new OrderDetail();
-                    orderDetail.setOrder(order);                 // order vừa tạo
-                    orderDetail.setProduct(cd.getProduct());     // sản phẩm
-                    orderDetail.setPrice(cd.getPrice());         // giá tại thời điểm mua
-                    orderDetail.setQuantity(cd.getQuantity());   // số lượng
+                    orderDetail.setOrder(order);
+                    orderDetail.setProduct(cd.getProduct());
+                    orderDetail.setPrice(cd.getPrice());
+                    orderDetail.setQuantity(cd.getQuantity());
 
                     this.orderDetailRepository.save(orderDetail);
                 }
