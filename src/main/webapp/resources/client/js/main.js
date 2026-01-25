@@ -258,28 +258,28 @@
 
         const params = new URLSearchParams(window.location.search);
 
-        // ===== RESET PAGE =====
+
         params.set('page', '1');
 
-        // ===== FACTORY =====
+
         params.delete('factory');
         $('#factoryFilter .form-check-input:checked').each(function () {
             params.append('factory', $(this).val());
         });
 
-        // ===== TARGET =====
+
         params.delete('target');
         $('#targetFilter .form-check-input:checked').each(function () {
             params.append('target', $(this).val());
         });
 
-        // ===== PRICE =====
+
         params.delete('price');
         $('#priceFilter .form-check-input:checked').each(function () {
             params.append('price', $(this).val());
         });
 
-        // ===== SORT =====
+
         const sort = $('input[name="radio-sort"]:checked').val();
         if (sort) {
             params.set('sort', sort);
@@ -296,7 +296,7 @@
 
         const params = new URLSearchParams(window.location.search);
 
-        // ===== FACTORY =====
+
         const factories = params.getAll('factory');
         $('#factoryFilter .form-check-input').each(function () {
             if (factories.includes($(this).val())) {
@@ -304,7 +304,7 @@
             }
         });
 
-        // ===== TARGET =====
+
         const targets = params.getAll('target');
         $('#targetFilter .form-check-input').each(function () {
             if (targets.includes($(this).val())) {
@@ -312,7 +312,7 @@
             }
         });
 
-        // ===== PRICE =====
+
         const prices = params.getAll('price');
         $('#priceFilter .form-check-input').each(function () {
             if (prices.includes($(this).val())) {
@@ -320,7 +320,7 @@
             }
         });
 
-        // ===== SORT (RADIO) =====
+
         const sort = params.get('sort');
         if (sort) {
             $('input[name="radio-sort"][value="' + sort + '"]')
@@ -329,8 +329,108 @@
     });
 
 
+    function isLogin() {
+        const navElement = $("#navbarCollapse");
+        const childLogin = navElement.find("a.a-login");
+        if (childLogin.length > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    $(document).on("click", ".btnAddToCartHomepage", function (event) {
+        event.preventDefault();
+
+        if (!isLogin()) {
+            $.toast({
+                heading: "Lỗi thao tác",
+                text: "Bạn cần đăng nhập tài khoản",
+                position: "top-right",
+                icon: "error"
+            });
+            return;
+        }
+
+        const productId = $(this).attr("data-product-id");
+        const token = $('meta[name="_csrf"]').attr("content");
+        const header = $('meta[name="_csrf_header"]').attr("content");
+
+        $.ajax({
+            url: `${window.location.origin}/api/add-product-to-cart`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                productId: productId,
+                quantity: 1
+            }),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                const sum = +response;
+                $("#sumCart").text(sum);
+
+                $.toast({
+                    heading: "Giỏ hàng",
+                    text: "Thêm sản phẩm vào giỏ hàng thành công",
+                    position: "top-right",
+                    icon: "success"
+                });
+            },
+            error: function (response) {
+                alert("Có lỗi xảy ra, check code đi ba :v");
+                console.log("error:", response);
+            }
+        });
+    });
 
 
+    $(document).on("click", ".btnAddToCartDetail", function (event) {
+        event.preventDefault();
+
+        if (!isLogin()) {
+            $.toast({
+                heading: "Lỗi thao tác",
+                text: "Bạn cần đăng nhập tài khoản",
+                position: "top-right",
+                icon: "error"
+            });
+            return;
+        }
+
+        const productId = $(this).attr("data-product-id");
+        const quantity = $("#cartDetails0\\.quantity").val();
+        const token = $('meta[name="_csrf"]').attr("content");
+        const header = $('meta[name="_csrf_header"]').attr("content");
+
+        $.ajax({
+            url: `${window.location.origin}/api/add-product-to-cart`,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                productId: productId,
+                quantity: quantity
+            }),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(header, token);
+            },
+            success: function (response) {
+                const sum = +response;
+                $("#sumCart").text(sum);
+
+                $.toast({
+                    heading: "Giỏ hàng",
+                    text: "Thêm sản phẩm vào giỏ hàng thành công",
+                    position: "top-right",
+                    icon: "success"
+                });
+            },
+            error: function (response) {
+                alert("Có lỗi xảy ra, check code đi ba :v");
+                console.log("error:", response);
+            }
+        });
+    });
 
 })(jQuery);
 

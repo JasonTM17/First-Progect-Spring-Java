@@ -1,6 +1,8 @@
 package vn.hoidanit.laptopshop.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -32,10 +34,11 @@ public class ProductService {
     private final UserService userService;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final HttpSession session;
 
     public ProductService(ProductRepository productRepository, CartRepository cartRepository,
             CartDetailRepository cartDetailRepository, UserService userService,
-            OrderRepository orderRepository, OrderDetailRepository orderDetailRepository) {
+            OrderRepository orderRepository, OrderDetailRepository orderDetailRepository, HttpSession session) {
 
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
@@ -43,6 +46,7 @@ public class ProductService {
         this.userService = userService;
         this.orderDetailRepository = orderDetailRepository;
         this.orderRepository = orderRepository;
+        this.session = session;
     }
 
     public Product createProduct(Product pr) {
@@ -78,37 +82,6 @@ public class ProductService {
         return this.productRepository.findAll(combinedSpec, page);
     }
 
-    //case 1
-    // public Page<Product> fetchProductsWithSpec(Pageable page, double min) {
-    //     return this.productRepository.findAll(ProductSpecs.minPrice(min), page);
-    // }
-    // case 2
-    // public Page<Product> fetchProductsWithSpec(Pageable page, double max) {
-    //     return this.productRepository.findAll(ProductSpecs.maxPrice(max), page);
-    // }
-    // case 3
-    // public Page<Product> fetchProductsWithSpec(Pageable page, String factory) {
-    //     return this.productRepository.findAll(
-    //             ProductSpecs.matchFactory(factory), page);
-    // }
-    // case 4
-    // public Page<Product> fetchProductsWithSpec(Pageable page, List<String> factory) {
-    //     return this.productRepository.findAll(ProductSpecs.matchListFactory(factory), page);
-    // }
-    // case 5
-    // public Page<Product> fetchProductsWithSpec(Pageable page, String price) {
-    //     if (price.equals("10-toi-15-trieu")) {
-    //         double min = 10000000;
-    //         double max = 15000000;
-    //         return this.productRepository.findAll(ProductSpecs.matchPrice(min, max), page);
-    //     } else if (price.equals("15-toi-30-trieu")) {
-    //         double min = 15000000;
-    //         double max = 30000000;
-    //         return this.productRepository.findAll(ProductSpecs.matchPrice(min, max), page);
-    //     } else {
-    //         return this.productRepository.findAll(page);
-    //     }
-    // }
     public Specification<Product> buildPriceSpecification(List<String> price) {
         Specification<Product> combinedSpec = Specification.where(null);
         for (String p : price) {
@@ -116,8 +89,9 @@ public class ProductService {
             double max = 0;
             switch (p) {
                 case "duoi-10-trieu":
-                    min = 0;
+                    min = 1;
                     max = 10000000;
+                    break;
                 case "10-toi-15-trieu":
                     min = 10000000;
                     max = 15000000;
@@ -131,7 +105,6 @@ public class ProductService {
                 case "tren-20-trieu":
                     min = 20000000;
                     max = 200000000;
-
                     break;
             }
             if (min != 0 && max != 0) {
@@ -275,6 +248,26 @@ public class ProductService {
             }
         }
 
+    }
+
+    @SuppressWarnings("unchecked")
+    public void handleAddProductToCart(String email, Long productId, long quantity) {
+
+        if (email == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        Map<Long, Long> cart = (Map<Long, Long>) session.getAttribute("cart");
+
+        if (cart == null) {
+            cart = new HashMap<>();
+        }
+
+        cart.put(productId, cart.getOrDefault(productId, 0L) + quantity);
+
+        session.setAttribute("cart", cart);
+
+        int sum = cart.values().stream().mapToInt(Long::intValue).sum();
+        session.setAttribute("sum", sum);
     }
 
 }

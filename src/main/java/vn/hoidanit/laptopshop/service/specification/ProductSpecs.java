@@ -36,7 +36,6 @@ public class ProductSpecs {
                 );
     }
 
-    // case 4: match list target
     public static Specification<Product> matchListTarget(List<String> target) {
         return (root, query, cb)
                 -> root.get("target").in(target);
@@ -55,7 +54,6 @@ public class ProductSpecs {
                 );
     }
 
-    // case 6
     public static Specification<Product> matchMultiplePrice(double min, double max) {
         return (root, query, cb)
                 -> cb.between(
