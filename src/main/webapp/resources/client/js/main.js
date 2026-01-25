@@ -252,6 +252,82 @@
         return formatted;
     }
 
+    // handle filter products
+    $('#btnFilter').click(function (event) {
+        event.preventDefault();
+
+        const params = new URLSearchParams(window.location.search);
+
+        // ===== RESET PAGE =====
+        params.set('page', '1');
+
+        // ===== FACTORY =====
+        params.delete('factory');
+        $('#factoryFilter .form-check-input:checked').each(function () {
+            params.append('factory', $(this).val());
+        });
+
+        // ===== TARGET =====
+        params.delete('target');
+        $('#targetFilter .form-check-input:checked').each(function () {
+            params.append('target', $(this).val());
+        });
+
+        // ===== PRICE =====
+        params.delete('price');
+        $('#priceFilter .form-check-input:checked').each(function () {
+            params.append('price', $(this).val());
+        });
+
+        // ===== SORT =====
+        const sort = $('input[name="radio-sort"]:checked').val();
+        if (sort) {
+            params.set('sort', sort);
+        } else {
+            params.delete('sort');
+        }
+
+
+        window.location.href = window.location.pathname + '?' + params.toString();
+    });
+
+
+    $(function () {
+
+        const params = new URLSearchParams(window.location.search);
+
+        // ===== FACTORY =====
+        const factories = params.getAll('factory');
+        $('#factoryFilter .form-check-input').each(function () {
+            if (factories.includes($(this).val())) {
+                $(this).prop('checked', true);
+            }
+        });
+
+        // ===== TARGET =====
+        const targets = params.getAll('target');
+        $('#targetFilter .form-check-input').each(function () {
+            if (targets.includes($(this).val())) {
+                $(this).prop('checked', true);
+            }
+        });
+
+        // ===== PRICE =====
+        const prices = params.getAll('price');
+        $('#priceFilter .form-check-input').each(function () {
+            if (prices.includes($(this).val())) {
+                $(this).prop('checked', true);
+            }
+        });
+
+        // ===== SORT (RADIO) =====
+        const sort = params.get('sort');
+        if (sort) {
+            $('input[name="radio-sort"][value="' + sort + '"]')
+                .prop('checked', true);
+        }
+    });
+
 
 
 

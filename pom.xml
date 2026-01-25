@@ -92,7 +92,6 @@
             <scope>provided</scope>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -101,7 +100,26 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.hibernate.orm</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                    <generatedSourcesDirectory>
+            ${project.build.directory}/generated-sources/annotations
+                    </generatedSourcesDirectory>
+                </configuration>
+            </plugin>
         </plugins>
+
+
     </build>
 
 </project>
