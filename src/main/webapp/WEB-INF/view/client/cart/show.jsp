@@ -1,240 +1,205 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-            <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-                <!DOCTYPE html>
-                <html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-                <head>
-                    <meta charset="utf-8">
-                    <title>${product.name} - Laptopshop</title>
-                    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-                    <meta content="" name="keywords">
-                    <meta content="" name="description">
+<!DOCTYPE html>
+<html lang="vi">
 
-                    <!-- Google Web Fonts -->
-                    <link rel="preconnect" href="https://fonts.googleapis.com">
-                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-                        rel="stylesheet">
+<head>
+    <title>Giỏ hàng - Laptopshop</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-client.jsp" />
+</head>
 
-                    <!-- Icon Font Stylesheet -->
-                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-                        rel="stylesheet">
+<body class="ls-client">
+    <jsp:include page="../layout/header.jsp" />
 
-                    <!-- Libraries Stylesheet -->
-                    <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-                    <link href="/client/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <main>
+        <section style="padding: var(--space-8) 0 var(--space-4); border-bottom: 1px solid var(--border); background: var(--bg-muted);">
+            <div class="ui-container">
+                <nav aria-label="breadcrumb">
+                    <ol class="ui-breadcrumb">
+                        <li><a href="/">Trang chủ</a></li>
+                        <li class="active">Giỏ hàng</li>
+                    </ol>
+                </nav>
 
-
-                    <!-- Customized Bootstrap Stylesheet -->
-                    <link href="/client/css/bootstrap.min.css" rel="stylesheet">
-
-                    <!-- Template Stylesheet -->
-                    <link href="/client/css/style.css" rel="stylesheet">
-                </head>
-
-                <body>
-
-                    <!-- Spinner Start -->
-                    <div id="spinner"
-                        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-                        <div class="spinner-grow text-primary" role="status"></div>
-                    </div>
-                    <!-- Spinner End -->
-
-
-                    <jsp:include page="../layout/header.jsp" />
-
-                    <!-- Cart Page Start -->
-                    <div class="container-fluid py-5">
-                        <div class="container py-5">
-                            <div class="mb-3">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item">
-                                            <a href="/">Home</a>
-                                        </li>
-                                        <li class="breadcrumb-item active" aria-current="page">
-                                            Chi Tiết Giỏ Hàng
-                                        </li>
-                                    </ol>
-                                </nav>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Sản phẩm</th>
-                                            <th scope="col">Tên</th>
-                                            <th scope="col">Giá cả</th>
-                                            <th scope="col">Số lượng</th>
-                                            <th scope="col">Thành tiền</th>
-                                            <th scope="col">Xử lí</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="cartDetail" items="${cartDetails}" varStatus="status">
-                                            <tr>
-                                                <th scope="row">
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="/images/product/${cartDetail.product.image}"
-                                                            class="img-fluid me-5 rounded-circle"
-                                                            style="width: 80px; height: 80px;" alt="">
-                                                    </div>
-                                                </th>
-                                                <td>
-                                                    <p class="mb-0 mt-4">
-                                                        <a href="/product/${cartDetail.product.id}" target="_blank">
-                                                            ${cartDetail.product.name}
-                                                        </a>
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p class="mb-0 mt-4">
-                                                        <fmt:formatNumber type="number"
-                                                            value="${cartDetail.product.price}" /> đ
-                                                    </p>
-                                                </td>
-
-                                                <td>
-                                                    <div class="input-group quantity mt-4" style="width: 100px;">
-                                                        <div class="input-group-btn">
-                                                            <button
-                                                                class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
-                                                        </div>
-                                                        <input type="text"
-                                                            class="form-control form-control-sm text-center border-0"
-                                                            value="${cartDetail.quantity}"
-                                                            data-cart-detail-id="${cartDetail.id}"
-                                                            data-cart-detail-price="${cartDetail.price}"
-                                                            data-cart-detail-index="${status.index}">
-                                                        <div class="input-group-btn">
-                                                            <button
-                                                                class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td>
-                                                    <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
-                                                        <fmt:formatNumber type="number"
-                                                            value="${cartDetail.price * cartDetail.quantity}" /> đ
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <form method="post" action="/delete-cart-product/${cartDetail.id}">
-                                                        <input type="hidden" name="${_csrf.parameterName}"
-                                                            value="${_csrf.token}" />
-                                                        <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                                            <i class="fa fa-times text-danger"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <c:if test="${not empty cartDetails}">
-                                <div class="mt-5 row g-4 justify-content-start">
-                                    <div class="col-12 col-md-8">
-                                        <div class="bg-light rounded">
-                                            <div class="p-4">
-                                                <h1 class="display-6 mb-4">Thông tin <span class="fw-normal">Đơn
-                                                        hàng</span>
-                                                </h1>
-                                                <div class="d-flex justify-content-between mb-4">
-                                                    <h5 class="mb-0 me-4">Tạm tính:</h5>
-                                                    <p class="mb-0" data-cart-total-price="${totalPrice}">
-                                                        <fmt:formatNumber type="number" value="${totalPrice}" /> đ
-                                                    </p>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5 class="mb-0 me-4">Phí vận chuyển: </h5>
-                                                    <div class="">
-                                                        <p class="mb-0">0đ</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                                <h5 class="mb-0 ps-4 me-4">Tổng số tiền: </h5>
-                                                <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
-                                                    <fmt:formatNumber type="number" value="${totalPrice}" /> đ
-                                                </p>
-                                            </div>
-                                            <form:form action="/confirm-checkout" method="post" modelAttribute="cart">
-                                                <input type="hidden" name="${_csrf.parameterName}"
-                                                    value="${_csrf.token}" />
-                                                <div style="display: none;">
-                                                    <c:forEach var="cartDetail" items="${cart.cartDetails}"
-                                                        varStatus="status">
-                                                        <div class="mb-3">
-                                                            <div class="form-group">
-                                                                <label>Id:</label>
-                                                                <form:input class="form-control" type="text"
-                                                                    value="${cartDetail.id}"
-                                                                    path="cartDetails[${status.index}].id" />
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Quantity:</label>
-                                                                <form:input class="form-control" type="text"
-                                                                    value="${cartDetail.quantity}"
-                                                                    path="cartDetails[${status.index}].quantity" />
-                                                            </div>
-                                                        </div>
-
-                                                    </c:forEach>
-                                                </div>
-                                                <button
-                                                    class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                                                    type="submit">Xác nhận thanh toán</button>
-                                            </form:form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:if>
-
-                            <c:if test="${empty cartDetails}">
-                                <div style="height:110px"></div>
-                                <div class="alert alert-warning text-center mt-5">
-                                    Giỏ hàng của bạn đang trống
-                                    <br>
-                                    <a href="/" class="fw-bold text-success">
-                                        Tiếp tục mua sắm
-                                    </a>
-                                </div>
-                            </c:if>
+                <!-- Stepper -->
+                <div class="ui-stepper" role="list">
+                    <div class="ui-stepper__step is-active" role="listitem">
+                        <div class="ui-stepper__dot">1</div>
+                        <div class="ui-stepper__label">
+                            <div class="ui-stepper__label-main">Giỏ hàng</div>
+                            <div class="ui-stepper__label-sub">Xem lại sản phẩm</div>
                         </div>
                     </div>
-                    <!-- Cart Page End -->
+                    <div class="ui-stepper__bar"></div>
+                    <div class="ui-stepper__step" role="listitem">
+                        <div class="ui-stepper__dot">2</div>
+                        <div class="ui-stepper__label">
+                            <div class="ui-stepper__label-main">Giao hàng</div>
+                            <div class="ui-stepper__label-sub">Địa chỉ nhận hàng</div>
+                        </div>
+                    </div>
+                    <div class="ui-stepper__bar"></div>
+                    <div class="ui-stepper__step" role="listitem">
+                        <div class="ui-stepper__dot">3</div>
+                        <div class="ui-stepper__label">
+                            <div class="ui-stepper__label-main">Thanh toán</div>
+                            <div class="ui-stepper__label-sub">Chọn phương thức</div>
+                        </div>
+                    </div>
+                    <div class="ui-stepper__bar"></div>
+                    <div class="ui-stepper__step" role="listitem">
+                        <div class="ui-stepper__dot">4</div>
+                        <div class="ui-stepper__label">
+                            <div class="ui-stepper__label-main">Hoàn tất</div>
+                            <div class="ui-stepper__label-sub">Đặt hàng thành công</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                    <jsp:include page="../layout/footer.jsp" />
+        <section style="padding: var(--space-8) 0;">
+            <div class="ui-container">
+                <c:if test="${not empty error}">
+                    <div class="ui-alert ui-alert--danger" style="margin-bottom: var(--space-4);">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <div>${error}</div>
+                    </div>
+                </c:if>
+                <c:choose>
+                    <c:when test="${empty cartDetails}">
+                        <div class="ui-empty" style="background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: var(--space-16) var(--space-4);">
+                            <div class="ui-empty__icon" style="width: 120px; height: 120px; font-size: 48px;">
+                                <i class="bi bi-bag-x"></i>
+                            </div>
+                            <p class="ui-empty__title">Giỏ hàng của bạn đang trống</p>
+                            <p class="ui-empty__desc">Hãy tiếp tục khám phá và thêm sản phẩm vào giỏ nhé!</p>
+                            <a href="/products" class="ui-btn ui-btn--lg" style="margin-top: var(--space-3);">
+                                <i class="bi bi-arrow-left"></i>
+                                Tiếp tục mua sắm
+                            </a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="row g-4">
+                            <div class="col-lg-8">
+                                <div class="ui-card" style="padding: 0;">
+                                    <div style="padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                                        <h2 style="margin: 0; font-size: 1.125rem; font-weight: 700;">
+                                            Sản phẩm <span style="color: var(--text-muted); font-weight: 500;">(${cartDetails.size()})</span>
+                                        </h2>
+                                        <a href="/products" class="ui-btn ui-btn--ghost ui-btn--sm">
+                                            <i class="bi bi-plus-circle"></i>
+                                            Thêm sản phẩm
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <c:forEach var="cartDetail" items="${cartDetails}" varStatus="status">
+                                            <div class="ls-cart-item">
+                                                <img src="/images/product/${cartDetail.product.image}" class="ls-cart-item__img" alt="" />
+                                                <div>
+                                                    <a href="/product/${cartDetail.product.id}" class="ls-cart-item__name">
+                                                        <c:out value="${cartDetail.product.name}" />
+                                                    </a>
+                                                    <div class="ls-cart-item__meta">
+                                                        ${cartDetail.product.factory} · Bảo hành 12 tháng
+                                                    </div>
+                                                </div>
+                                                <div class="ls-cart-item__price">
+                                                    <fmt:formatNumber type="number" value="${cartDetail.product.price}" />₫
+                                                </div>
+                                                <div class="ui-qty">
+                                                    <button type="button" class="ui-qty__btn btn-minus" data-act="minus" aria-label="Giảm"><i class="bi bi-dash"></i></button>
+                                                    <input type="text"
+                                                           class="ui-qty__input"
+                                                           value="${cartDetail.quantity}"
+                                                           data-cart-detail-id="${cartDetail.id}"
+                                                           data-cart-detail-price="${cartDetail.price}"
+                                                           data-cart-detail-index="${status.index}" />
+                                                    <button type="button" class="ui-qty__btn btn-plus" data-act="plus" aria-label="Tăng"><i class="bi bi-plus"></i></button>
+                                                </div>
+                                                <div class="ls-cart-item__total" data-cart-detail-id="${cartDetail.id}">
+                                                    <fmt:formatNumber type="number" value="${cartDetail.price * cartDetail.quantity}" />₫
+                                                </div>
+                                                <form method="post" action="/delete-cart-product/${cartDetail.id}" style="margin: 0;">
+                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                                    <button type="submit"
+                                                            class="ui-iconbtn ui-iconbtn--danger"
+                                                            data-confirm="Bạn có chắc muốn xoá sản phẩm này khỏi giỏ?"
+                                                            data-confirm-title="Xoá sản phẩm"
+                                                            aria-label="Xoá">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!-- Back to Top -->
-                    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-                            class="fa fa-arrow-up"></i></a>
+                            <div class="col-lg-4">
+                                <aside class="ls-cart-summary">
+                                    <h3>Tổng đơn hàng</h3>
 
+                                    <div class="ls-cart-summary__row">
+                                        <span>Tạm tính</span>
+                                        <strong data-cart-total-price="${totalPrice}">
+                                            <fmt:formatNumber type="number" value="${totalPrice}" />₫
+                                        </strong>
+                                    </div>
+                                    <div class="ls-cart-summary__row">
+                                        <span>Phí vận chuyển</span>
+                                        <strong style="color: var(--success-600);">Miễn phí</strong>
+                                    </div>
+                                    <div class="ls-cart-summary__row">
+                                        <span>Khuyến mãi</span>
+                                        <strong>0₫</strong>
+                                    </div>
+                                    <div class="ls-cart-voucher">
+                                        <input type="text" aria-label="Mã giảm giá" placeholder="Nhập mã giảm giá" />
+                                        <button type="button" class="ui-btn ui-btn--outline ui-btn--sm">Áp dụng</button>
+                                    </div>
+                                    <div class="ls-cart-summary__total">
+                                        <span>Tổng cộng</span>
+                                        <strong data-cart-total-price="${totalPrice}">
+                                            <fmt:formatNumber type="number" value="${totalPrice}" />₫
+                                        </strong>
+                                    </div>
 
-                    <!-- JavaScript Libraries -->
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-                    <script src="/client/lib/easing/easing.min.js"></script>
-                    <script src="/client/lib/waypoints/waypoints.min.js"></script>
-                    <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
-                    <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
+                                    <form:form action="/confirm-checkout" method="post" modelAttribute="cart" style="margin-top: var(--space-4);">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                        <div style="display: none;">
+                                            <c:forEach var="cartDetail" items="${cart.cartDetails}" varStatus="status">
+                                                <form:input type="text" value="${cartDetail.id}" path="cartDetails[${status.index}].id" />
+                                                <form:input type="text" value="${cartDetail.quantity}" path="cartDetails[${status.index}].quantity" />
+                                            </c:forEach>
+                                        </div>
+                                        <button type="submit" class="ui-btn ui-btn--lg ui-btn--block">
+                                            <i class="bi bi-credit-card"></i>
+                                            Xác nhận thanh toán
+                                        </button>
+                                    </form:form>
 
-                    <!-- Template Javascript -->
-                    <script src="/client/js/main.js"></script>
-                </body>
+                                    <div class="ls-cart-policy">
+                                        <div><i class="bi bi-shield-check"></i><span>Thanh toán an toàn với SSL 256-bit</span></div>
+                                        <div><i class="bi bi-truck"></i><span>Giao hàng miễn phí trong 2h nội thành</span></div>
+                                        <div><i class="bi bi-arrow-repeat"></i><span>Đổi trả 7 ngày nếu lỗi nhà sản xuất</span></div>
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </section>
+    </main>
 
-                </html>
+    <jsp:include page="../layout/footer.jsp" />
+    <jsp:include page="/WEB-INF/view/fragments/scripts-client.jsp" />
+    <script src="/client/js/main.js"></script>
+</body>
+
+</html>

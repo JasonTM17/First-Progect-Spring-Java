@@ -1,7 +1,10 @@
 package vn.hoidanit.laptopshop.config;
 
+import java.time.Duration;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -30,10 +33,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
-        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/");
-        registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/");
+        CacheControl staticCache = CacheControl.maxAge(Duration.ofDays(30)).cachePublic();
+        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/").setCacheControl(staticCache);
+        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/").setCacheControl(staticCache);
+        registry.addResourceHandler("/images/**").addResourceLocations("/resources/images/").setCacheControl(staticCache);
+        registry.addResourceHandler("/client/**").addResourceLocations("/resources/client/").setCacheControl(staticCache);
+        registry.addResourceHandler("/site.webmanifest")
+                .addResourceLocations("/site.webmanifest", "/resources/site.webmanifest");
+        registry.addResourceHandler("/robots.txt")
+                .addResourceLocations("/robots.txt", "/resources/robots.txt");
+        registry.addResourceHandler("/sitemap.xml")
+                .addResourceLocations("/sitemap.xml", "/resources/sitemap.xml");
     }
 
 }

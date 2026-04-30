@@ -1,65 +1,82 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-            <!DOCTYPE html>
-            <html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-            <head>
-                <meta charset="utf-8" />
-                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Nguyễn Sơn - Dự án laptopshop" />
-                <title>Detail Product - Nguyễn Sơn</title>
-                <link href="/css/styles.css" rel="stylesheet" />
-                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            </head>
+<!DOCTYPE html>
+<html lang="vi">
 
-            <body class="sb-nav-fixed">
-                <jsp:include page="../layout/header.jsp" />
-                <div id="layoutSidenav">
-                    <jsp:include page="../layout/sidebar.jsp" />
-                    <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid px-4">
-                                <h1 class="mt-4">Products</h1>
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/product">Products</a></li>
-                                    <li class="breadcrumb-item active">View Detail</li>
-                                </ol>
-                                <div class="container mt-5">
-                                    <div class="row">
-                                        <div class="col-12 mx-auto">
-                                            <div class="d-flex justify-content-between">
-                                                <h3>Product detail with id = ${id}</h3>
-                                            </div>
-                                            <hr />
-                                            <div class="card" style="width: 60%;">
-                                                <img class="card-img-top" src="/images/product/${product.image}"
-                                                    alt="Card image cap">
+<head>
+    <title>Chi tiết sản phẩm - Laptopshop Admin</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-admin.jsp" />
+</head>
 
-                                                <div class="card-header">
-                                                    Product information
-                                                </div>
-                                                <ul class="list-group list-group-flush">
-                                                    <li class="list-group-item">ID: ${product.id}</li>
-                                                    <li class="list-group-item">Name: ${product.name}</li>
-                                                    <li class="list-group-item">Price: ${product.price}</li>
-                                                </ul>
-                                            </div>
-                                            <a href="/admin/product" class="btn btn-success mt-3">Back</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </main>
-                        <jsp:include page="../layout/footer.jsp" />
+<body class="ls-admin">
+    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/sidebar.jsp" />
+
+    <main class="la-main">
+        <header class="la-page-head">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="ui-breadcrumb" style="margin-bottom: 4px;">
+                        <li><a href="/admin">Admin</a></li>
+                        <li><a href="/admin/product">Sản phẩm</a></li>
+                        <li class="active">Chi tiết</li>
+                    </ol>
+                </nav>
+                <h1 class="la-page-head__title">Chi tiết sản phẩm #${product.id}</h1>
+                <p class="la-page-head__desc">Thông tin sản phẩm hiển thị tại cửa hàng</p>
+            </div>
+            <div class="la-page-head__actions">
+                <a href="/admin/product" class="ui-btn ui-btn--ghost"><i class="bi bi-arrow-left"></i> Quay lại</a>
+                <a href="/admin/product/update/${product.id}" class="ui-btn"><i class="bi bi-pencil"></i> Chỉnh sửa</a>
+            </div>
+        </header>
+
+        <div class="la-form-layout">
+            <div class="ui-card" style="padding: var(--space-6);">
+                <div style="display:flex; gap: var(--space-5); flex-wrap: wrap;">
+                    <div style="flex: 0 0 240px;">
+                        <div style="background: var(--bg-muted); border-radius: var(--radius); overflow: hidden; padding: var(--space-3); display:flex; align-items:center; justify-content:center;">
+                            <img src="/images/product/${product.image}" alt="${product.name}" style="max-width: 100%; max-height: 260px; object-fit: contain;" />
+                        </div>
+                    </div>
+                    <div style="flex: 1; min-width: 260px;">
+                        <h2 style="margin: 0 0 var(--space-2); font-size: 1.25rem;"><c:out value="${product.name}" /></h2>
+                        <div style="font-size: 1.5rem; font-weight: 800; color: var(--brand-700); margin-bottom: var(--space-4);">
+                            <fmt:formatNumber value="${product.price}" type="number" groupingUsed="true" />₫
+                        </div>
+                        <dl style="display: grid; grid-template-columns: 140px 1fr; gap: var(--space-3) var(--space-4); margin: 0;">
+                            <dt class="ui-muted">ID</dt><dd style="margin:0; font-weight:600;">#${product.id}</dd>
+                            <dt class="ui-muted">Hãng</dt><dd style="margin:0;"><span class="ui-badge ui-badge--muted">${product.factory}</span></dd>
+                            <dt class="ui-muted">Mục đích</dt><dd style="margin:0;">${product.target}</dd>
+                            <dt class="ui-muted">Số lượng</dt><dd style="margin:0;">${product.quantity}</dd>
+                            <dt class="ui-muted">Mô tả ngắn</dt><dd style="margin:0;"><c:out value="${product.shortDesc}" default="—" /></dd>
+                        </dl>
                     </div>
                 </div>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                    crossorigin="anonymous"></script>
-                <script src="js/scripts.js"></script>
+                <c:if test="${not empty product.detailDesc}">
+                    <hr style="margin: var(--space-5) 0; border: 0; border-top: 1px solid var(--border);" />
+                    <h3 style="font-size: 1rem; margin: 0 0 var(--space-2);">Mô tả chi tiết</h3>
+                    <p style="color: var(--text-subtle); line-height: 1.7; white-space: pre-line;"><c:out value="${product.detailDesc}" /></p>
+                </c:if>
+            </div>
 
-            </body>
+            <div>
+                <section class="la-form-section">
+                    <h3 class="la-form-section__title">Hành động nhanh</h3>
+                    <div style="display:flex; flex-direction:column; gap: var(--space-2);">
+                        <a href="/admin/product/update/${product.id}" class="ui-btn ui-btn--secondary"><i class="bi bi-pencil"></i> Chỉnh sửa</a>
+                        <a href="/product/${product.id}" target="_blank" class="ui-btn ui-btn--ghost"><i class="bi bi-box-arrow-up-right"></i> Xem trên cửa hàng</a>
+                    </div>
+                </section>
+            </div>
+        </div>
 
-            </html>
+        <jsp:include page="../layout/footer.jsp" />
+    </main>
+
+    <jsp:include page="/WEB-INF/view/fragments/scripts-admin.jsp" />
+</body>
+
+</html>

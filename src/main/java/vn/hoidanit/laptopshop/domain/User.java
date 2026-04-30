@@ -133,7 +133,6 @@ public class User implements Serializable {
         sb.append("User[");
         sb.append("id=").append(id);
         sb.append(", email=").append(email);
-        sb.append(", password=").append(password);
         sb.append(", fullName=").append(fullName);
         sb.append(", address=").append(address);
         sb.append(", phone=").append(phone);

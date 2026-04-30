@@ -12,8 +12,8 @@
     <groupId>vn.hoidanit</groupId>
     <artifactId>laptopshop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>laptopshop</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Laptopshop</name>
+    <description>Spring Boot MVC e-commerce portfolio application for laptop retail.</description>
     <packaging>war</packaging>
     <properties>
         <java.version>17</java.version>
@@ -37,6 +37,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -55,6 +61,12 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -118,11 +130,19 @@
                         <path>
                             <groupId>org.hibernate.orm</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>${hibernate.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <generatedSourcesDirectory>
             ${project.build.directory}/generated-sources/annotations
                     </generatedSourcesDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Dnet.bytebuddy.experimental=true</argLine>
                 </configuration>
             </plugin>
         </plugins>

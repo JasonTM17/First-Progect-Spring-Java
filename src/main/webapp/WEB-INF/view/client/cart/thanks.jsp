@@ -1,77 +1,85 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-        <!DOCTYPE html>
-        <html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 
-        <head>
-            <meta charset="utf-8">
-            <title>Đặt hàng thành công - Laptopshop</title>
-            <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<head>
+    <title>Đặt hàng thành công - Laptopshop</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-client.jsp" />
+</head>
 
-            <!-- Google Web Fonts -->
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link
-                href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-                rel="stylesheet">
+<body class="ls-client">
+    <jsp:include page="../layout/header.jsp" />
 
-            <!-- Icon Font -->
-            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <main>
+        <section style="padding: var(--space-8) 0 var(--space-4); background: var(--bg-muted); border-bottom: 1px solid var(--border);">
+            <div class="ui-container">
+                <div class="ui-stepper" role="list" style="margin: 0;">
+                    <div class="ui-stepper__step is-done"><div class="ui-stepper__dot"><i class="bi bi-check"></i></div><div class="ui-stepper__label"><div class="ui-stepper__label-main">Giỏ hàng</div></div></div>
+                    <div class="ui-stepper__bar" style="background: var(--success-500);"></div>
+                    <div class="ui-stepper__step is-done"><div class="ui-stepper__dot"><i class="bi bi-check"></i></div><div class="ui-stepper__label"><div class="ui-stepper__label-main">Giao hàng</div></div></div>
+                    <div class="ui-stepper__bar" style="background: var(--success-500);"></div>
+                    <div class="ui-stepper__step is-done"><div class="ui-stepper__dot"><i class="bi bi-check"></i></div><div class="ui-stepper__label"><div class="ui-stepper__label-main">Thanh toán</div></div></div>
+                    <div class="ui-stepper__bar" style="background: var(--success-500);"></div>
+                    <div class="ui-stepper__step is-active"><div class="ui-stepper__dot" style="background: var(--success-500);"><i class="bi bi-check"></i></div><div class="ui-stepper__label"><div class="ui-stepper__label-main">Hoàn tất</div></div></div>
+                </div>
+            </div>
+        </section>
 
-            <!-- Bootstrap & Style -->
-            <link href="/client/css/bootstrap.min.css" rel="stylesheet">
-            <link href="/client/css/style.css" rel="stylesheet">
-        </head>
+        <section style="padding: var(--space-12) 0;">
+            <div class="ui-container" style="max-width: 720px;">
+                <div class="ui-card ui-slide-up" style="padding: var(--space-12) var(--space-8); text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #d1fae5, #a7f3d0); display: inline-flex; align-items: center; justify-content: center; font-size: 56px; color: var(--success-600); margin-bottom: var(--space-5); box-shadow: 0 0 0 12px rgba(16, 185, 129, 0.12);">
+                        <i class="bi bi-check2"></i>
+                    </div>
+                    <h1 style="font-size: 2rem; font-weight: 800; margin: 0 0 var(--space-3); color: var(--text);">Đặt hàng thành công!</h1>
+                    <p style="font-size: 1rem; color: var(--text-muted); max-width: 480px; margin: 0 auto var(--space-6); line-height: 1.6;">
+                        Cảm ơn bạn đã mua hàng tại <strong style="color: var(--text);">Laptopshop</strong>.
+                        Đơn hàng của bạn đã được ghi nhận và sẽ được xử lý trong vòng 30 phút.
+                        Chúng tôi sẽ liên hệ với bạn sớm nhất.
+                    </p>
+                    <div style="display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap;">
+                        <a href="/" class="ui-btn ui-btn--secondary ui-btn--lg">
+                            <i class="bi bi-arrow-left"></i>
+                            Về trang chủ
+                        </a>
+                        <a href="/order-history" class="ui-btn ui-btn--lg">
+                            <i class="bi bi-receipt"></i>
+                            Xem đơn hàng
+                        </a>
+                    </div>
 
-        <body>
-
-            <!-- Header -->
-            <jsp:include page="../layout/header.jsp" />
-
-            <!-- Thanks Page Start -->
-            <div class="container-fluid py-5">
-                <div class="container py-5">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8">
-                            <div class="bg-light rounded p-5 text-center">
-
-                                <div class="mb-4">
-                                    <i class="fas fa-check-circle text-success" style="font-size: 80px;"></i>
-                                </div>
-
-                                <h1 class="mb-3 text-success">Đặt hàng thành công!</h1>
-                                <p class="mb-4 fs-5">
-                                    Cảm ơn bạn đã mua hàng tại <strong>Laptopshop</strong>.<br>
-                                    Đơn hàng của bạn đã được ghi nhận và sẽ sớm được xử lý.
-                                </p>
-
-                                <a href="/" class="btn btn-success rounded-pill px-5 py-3">
-                                    <i class="fas fa-home me-2 text-white"></i>
-                                    Quay về trang chủ
-                                </a>
-
+                    <div style="margin-top: var(--space-8); padding-top: var(--space-5); border-top: 1px dashed var(--border); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4); text-align: left;">
+                        <div class="ui-row" style="align-items: flex-start;">
+                            <div class="ui-iconbtn ui-iconbtn--primary"><i class="bi bi-telephone"></i></div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">Xác nhận đơn hàng</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Chúng tôi sẽ gọi bạn trong 30'</div>
+                            </div>
+                        </div>
+                        <div class="ui-row" style="align-items: flex-start;">
+                            <div class="ui-iconbtn ui-iconbtn--warn"><i class="bi bi-box-seam"></i></div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">Đóng gói cẩn thận</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Kiểm tra kỹ trước khi giao</div>
+                            </div>
+                        </div>
+                        <div class="ui-row" style="align-items: flex-start;">
+                            <div class="ui-iconbtn ui-iconbtn--success"><i class="bi bi-truck"></i></div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">Giao hàng nhanh</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">Trong vòng 2h nội thành</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Thanks Page End -->
+        </section>
+    </main>
 
-            <!-- Footer -->
-            <jsp:include page="../layout/footer.jsp" />
+    <jsp:include page="../layout/footer.jsp" />
+    <jsp:include page="/WEB-INF/view/fragments/scripts-client.jsp" />
+</body>
 
-            <!-- Back to Top -->
-            <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top">
-                <i class="fa fa-arrow-up"></i>
-            </a>
-
-            <!-- JS -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="/client/js/main.js"></script>
-
-        </body>
-
-        </html>
+</html>

@@ -1,88 +1,45 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-            <!DOCTYPE html>
-            <html lang="en">
+<!DOCTYPE html>
+<html lang="vi">
 
-            <head>
-                <meta charset="utf-8" />
-                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Admin - Laptop Shop" />
-                <title>Delete Order | Admin</title>
+<head>
+    <title>Xoá đơn hàng - Laptopshop Admin</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-admin.jsp" />
+</head>
 
-                <link href="/css/styles.css" rel="stylesheet" />
-                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            </head>
+<body class="ls-admin">
+    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/sidebar.jsp" />
 
-            <body class="sb-nav-fixed">
+    <main class="la-main">
+        <header class="la-page-head">
+            <div>
+                <h1 class="la-page-head__title">Xoá đơn hàng #${id}</h1>
+                <p class="la-page-head__desc">Xác nhận việc xoá đơn hàng</p>
+            </div>
+        </header>
 
-                <jsp:include page="../layout/header.jsp" />
-
-                <div id="layoutSidenav">
-                    <jsp:include page="../layout/sidebar.jsp" />
-
-                    <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid px-4">
-
-                                <h1 class="mt-4">Delete Order</h1>
-
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item">
-                                        <a href="/admin">Dashboard</a>
-                                    </li>
-                                    <li class="breadcrumb-item">
-                                        <a href="/admin/order">Orders</a>
-                                    </li>
-                                    <li class="breadcrumb-item active">Delete</li>
-                                </ol>
-
-                                <div class="container mt-5">
-                                    <div class="row">
-                                        <div class="col-md-6 col-12 mx-auto">
-
-                                            <h3>Delete order with ID = ${id}</h3>
-                                            <hr />
-
-                                            <div class="alert alert-danger">
-                                                Are you sure you want to delete this order?
-                                            </div>
-
-                                            <form:form method="post" action="/admin/order/delete"
-                                                modelAttribute="newOrder">
-
-                                                <!-- hidden id -->
-                                                <form:input type="hidden" path="id" value="${id}" />
-
-                                                <div class="d-flex gap-2">
-                                                    <button type="submit" class="btn btn-danger">
-                                                        Confirm Delete
-                                                    </button>
-
-                                                    <a href="/admin/order" class="btn btn-secondary">
-                                                        Cancel
-                                                    </a>
-                                                </div>
-
-                                            </form:form>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </main>
-
-                        <jsp:include page="../layout/footer.jsp" />
-                    </div>
+        <div class="ui-card" style="max-width: 560px; padding: var(--space-6);">
+            <div class="ui-alert ui-alert--danger" style="margin-bottom: var(--space-4);">
+                <i class="bi bi-exclamation-triangle"></i>
+                <span>Bạn chắc chắn muốn xoá đơn hàng này? Hành động này không thể hoàn tác.</span>
+            </div>
+            <form:form method="post" action="/admin/order/delete" modelAttribute="newOrder">
+                <form:input type="hidden" path="id" value="${id}" />
+                <div style="display:flex; gap: var(--space-3);">
+                    <button type="submit" class="ui-btn ui-btn--danger"><i class="bi bi-trash"></i> Xác nhận xoá</button>
+                    <a href="/admin/order" class="ui-btn ui-btn--ghost">Huỷ</a>
                 </div>
+            </form:form>
+        </div>
 
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                    crossorigin="anonymous"></script>
-                <script src="/js/scripts.js"></script>
+        <jsp:include page="../layout/footer.jsp" />
+    </main>
 
-            </body>
+    <jsp:include page="/WEB-INF/view/fragments/scripts-admin.jsp" />
+</body>
 
-            </html>
+</html>

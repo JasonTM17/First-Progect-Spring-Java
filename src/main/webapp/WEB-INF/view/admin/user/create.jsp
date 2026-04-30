@@ -1,124 +1,138 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-            <!DOCTYPE html>
-            <html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-            <head>
-                <meta charset="utf-8" />
-                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Nguyễn Sơn - Dự án laptopshop" />
-                <title>Create User - Nguyễn Sơn</title>
-                <link href="/css/styles.css" rel="stylesheet" />
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-                <script>
-                    $(document).ready(() => {
-                        const avatarFile = $("#avatarFile");
-                        avatarFile.change(function (e) {
-                            const imgURL = URL.createObjectURL(e.target.files[0]);
-                            $("#avatarPreview").attr("src", imgURL);
-                            $("#avatarPreview").css({ "display": "block" });
-                        });
-                    });
-                </script>
+<!DOCTYPE html>
+<html lang="vi">
 
-                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            </head>
+<head>
+    <title>Thêm người dùng - Laptopshop Admin</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-admin.jsp" />
+</head>
 
-            <body class="sb-nav-fixed">
-                <jsp:include page="../layout/header.jsp" />
-                <div id="layoutSidenav">
-                    <jsp:include page="../layout/sidebar.jsp" />
-                    <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid px-4">
-                                <h1 class="mt-4">Create Users</h1>
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/user">Users</a></li>
-                                    <li class="breadcrumb-item active">Create</li>
-                                </ol>
-                                <div class="mt-5">
-                                    <div class="row">
-                                        <div class="col-md-6 col-12 mx-auto">
-                                            <h3>Create a user</h3>
-                                            <hr>
-                                            <form:form method="post" action="/admin/user/create"
-                                                modelAttribute="newUser" class="row" enctype="multipart/form-data">
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <c:set var="errorEmail">
-                                                        <form:errors path="email" cssClass="invalid-feedback" />
-                                                    </c:set>
-                                                    <label class="form-label">Email: </label>
-                                                    <form:input type="email"
-                                                        class="form-control ${not empty errorEmail ? 'is-invalid':''}"
-                                                        path="email" />
-                                                    ${errorEmail}
-                                                </div>
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <c:set var="errorPassword">
-                                                        <form:errors path="password" cssClass="invalid-feedback" />
-                                                    </c:set>
-                                                    <label class="form-label">Password</label>
-                                                    <form:input type="password"
-                                                        class="form-control ${not empty errorPassword ? 'is-invalid':''}"
-                                                        path="password" />
-                                                    ${errorPassword}
-                                                </div>
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Phone number:</label>
-                                                    <form:input type="text" class="form-control" path="phone" />
-                                                </div>
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <c:set var="errorFullName">
-                                                        <form:errors path="fullName" cssClass="invalid-feedback" />
-                                                    </c:set>
+<body class="ls-admin">
+    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/sidebar.jsp" />
 
-                                                    <label class="form-label">Full Name:</label>
-                                                    <form:input type="text"
-                                                        class="form-control ${not empty errorFullName ? 'is-invalid' : ''}"
-                                                        path="fullName" />
-                                                    ${errorFullName}
-                                                </div>
+    <main class="la-main">
+        <header class="la-page-head">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="ui-breadcrumb" style="margin-bottom: 4px;">
+                        <li><a href="/admin">Admin</a></li>
+                        <li><a href="/admin/user">Người dùng</a></li>
+                        <li class="active">Thêm mới</li>
+                    </ol>
+                </nav>
+                <h1 class="la-page-head__title">Thêm người dùng mới</h1>
+                <p class="la-page-head__desc">Tạo tài khoản mới cho hệ thống</p>
+            </div>
+            <div class="la-page-head__actions">
+                <a href="/admin/user" class="ui-btn ui-btn--ghost">
+                    <i class="bi bi-arrow-left"></i> Quay lại
+                </a>
+            </div>
+        </header>
 
-                                                <div class="mb-3 col-12 ">
-                                                    <label class="form-label">Address:</label>
-                                                    <form:input type="text" class="form-control" path="address" />
-                                                </div>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Role:</label>
-                                                    <form:select class="form-select" path="role.name">
-                                                        <form:option value="ADMIN">ADMIN</form:option>
-                                                        <form:option value="USER">USER</form:option>
-                                                    </form:select>
-                                                </div>
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label for="avatarFile" class="form-label">Avatar:</label>
-                                                    <input class="form-control" type="file" id="avatarFile" multiple
-                                                        accept=".png, .jpg, .jpeg" name="hoidanitFile" />
-                                                </div>
-                                                <div class="col-12 mb-3">
-                                                    <img style="max-height: 250px; display: none;" alt="avatar preview"
-                                                        id="avatarPreview" />
-                                                </div>
-                                                <div class="col-12 mb-5">
-                                                    <button type="submit" class="btn btn-primary">Create</button>
-                                                </div>
-                                            </form:form>
-                                        </div>
-                                    </div>
+        <form:form method="post" action="/admin/user/create" modelAttribute="newUser" enctype="multipart/form-data" id="userForm">
+            <div class="la-form-layout">
+                <div>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Thông tin tài khoản</h3>
+                        <p class="la-form-section__desc">Email và mật khẩu đăng nhập hệ thống</p>
+                        <div class="la-form-row">
+                            <div>
+                                <c:set var="errorEmail"><form:errors path="email" cssClass="invalid-feedback" /></c:set>
+                                <label class="form-label">Email <span style="color:var(--danger-500)">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <form:input type="email" class="form-control ${not empty errorEmail ? 'is-invalid':''}" path="email" placeholder="user@example.com" />
+                                    ${errorEmail}
                                 </div>
                             </div>
-                        </main>
-                        <jsp:include page="../layout/footer.jsp" />
-                    </div>
+                            <div>
+                                <c:set var="errorPassword"><form:errors path="password" cssClass="invalid-feedback" /></c:set>
+                                <label class="form-label">Mật khẩu <span style="color:var(--danger-500)">*</span></label>
+                                <div class="input-group" data-password>
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <form:input type="password" class="form-control ${not empty errorPassword ? 'is-invalid':''}" path="password" placeholder="Tối thiểu 6 ký tự" />
+                                    <button type="button" class="btn btn-outline-secondary" data-password-toggle><i class="bi bi-eye"></i></button>
+                                    ${errorPassword}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Thông tin cá nhân</h3>
+                        <p class="la-form-section__desc">Họ tên, số điện thoại và địa chỉ</p>
+                        <div class="la-form-row">
+                            <div>
+                                <c:set var="errorFullName"><form:errors path="fullName" cssClass="invalid-feedback" /></c:set>
+                                <label class="form-label">Họ và tên <span style="color:var(--danger-500)">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <form:input type="text" class="form-control ${not empty errorFullName ? 'is-invalid' : ''}" path="fullName" placeholder="Nguyễn Văn A" />
+                                    ${errorFullName}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Số điện thoại</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                    <form:input type="text" class="form-control" path="phone" placeholder="0912 345 678" />
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: var(--space-3);">
+                            <label class="form-label">Địa chỉ</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <form:input type="text" class="form-control" path="address" placeholder="Số nhà, đường, quận, tỉnh/thành" />
+                            </div>
+                        </div>
+                    </section>
                 </div>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                    crossorigin="anonymous"></script>
-                <script src="js/scripts.js"></script>
 
-            </body>
+                <div>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Phân quyền</h3>
+                        <p class="la-form-section__desc">Vai trò của người dùng trong hệ thống</p>
+                        <label class="form-label">Vai trò</label>
+                        <form:select class="form-select" path="role.name">
+                            <form:option value="USER">USER - Khách hàng</form:option>
+                            <form:option value="ADMIN">ADMIN - Quản trị viên</form:option>
+                        </form:select>
+                    </section>
 
-            </html>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Ảnh đại diện</h3>
+                        <p class="la-form-section__desc">PNG, JPG tối đa 5MB</p>
+                        <div class="la-uploader">
+                            <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg" name="hoidanitFile" />
+                            <div class="la-uploader__placeholder">
+                                <div class="la-uploader__icon"><i class="bi bi-cloud-arrow-up"></i></div>
+                                <p class="la-uploader__title">Kéo & thả ảnh hoặc nhấp để chọn</p>
+                                <p class="la-uploader__desc">PNG / JPG / JPEG</p>
+                            </div>
+                            <img class="la-uploader__preview" id="avatarPreview" alt="" />
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="la-form-actions">
+                <a href="/admin/user" class="ui-btn ui-btn--secondary">Huỷ</a>
+                <button type="submit" class="ui-btn">
+                    <i class="bi bi-check2"></i> Tạo người dùng
+                </button>
+            </div>
+        </form:form>
+
+        <jsp:include page="../layout/footer.jsp" />
+    </main>
+
+    <jsp:include page="/WEB-INF/view/fragments/scripts-admin.jsp" />
+</body>
+
+</html>

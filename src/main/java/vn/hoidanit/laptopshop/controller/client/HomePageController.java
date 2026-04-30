@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -45,7 +47,20 @@ public class HomePageController {
         Page<Product> prs = this.productService.fetchProducts(pageable);
         List<Product> products = prs.getContent();
         model.addAttribute("products", products);
+        model.addAttribute("featuredProducts", products);
+        model.addAttribute("macbookProducts", this.productService.fetchProductsByFactory("APPLE", 5));
+        model.addAttribute("gamingProducts", this.productService.fetchProductsByTarget("GAMING", 5));
+        model.addAttribute("officeProducts", this.productService.fetchProductsByTarget("SINHVIEN-VANPHONG", 5));
+        model.addAttribute("budgetProducts", this.productService.fetchProductsByPriceRange("duoi-10-trieu", 5));
         return "client/homepage/show";
+    }
+
+    @GetMapping("/about")
+    public String getAboutPage(Model model) {
+        model.addAttribute("productCount", this.userService.countProducts());
+        model.addAttribute("orderCount", this.userService.countOrders());
+        model.addAttribute("userCount", this.userService.countUsers());
+        return "client/about/show";
     }
 
     @GetMapping("/register")
@@ -85,16 +100,36 @@ public class HomePageController {
 
     @GetMapping("/order-history")
     public String getOrderHistoryPage(Model model, HttpServletRequest request) {
-
-        User currentUser = new User(); // null
-        HttpSession session = request.getSession(false);
-        long id = (long) session.getAttribute("id");
-        currentUser.setId(id);
-
+        User currentUser = resolveCurrentUser(request);
         List<Order> orders = this.orderService.fetchOrderByUser(currentUser);
         model.addAttribute("orders", orders);
 
         return "client/cart/order-history";
+    }
+
+    private User resolveCurrentUser(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Object sessionUser = session == null ? null : session.getAttribute("user");
+        if (sessionUser instanceof User user && user.getId() > 0) {
+            return user;
+        }
+
+        Object id = session == null ? null : session.getAttribute("id");
+        if (id instanceof Number userId) {
+            User user = this.userService.getUserById(userId.longValue());
+            if (user != null) {
+                return user;
+            }
+        }
+
+        if (request.getUserPrincipal() != null) {
+            User user = this.userService.getUserByEmail(request.getUserPrincipal().getName());
+            if (user != null) {
+                return user;
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User session is missing");
     }
 
 }

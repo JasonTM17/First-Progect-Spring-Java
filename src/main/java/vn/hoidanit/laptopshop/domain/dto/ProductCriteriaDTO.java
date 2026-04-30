@@ -6,6 +6,7 @@ import java.util.Optional;
 public class ProductCriteriaDTO {
 
     private Optional<String> page = Optional.empty();
+    private Optional<String> name = Optional.empty();
     private Optional<List<String>> factory = Optional.empty();
     private Optional<List<String>> target = Optional.empty();
     private Optional<List<String>> price = Optional.empty();
@@ -17,6 +18,14 @@ public class ProductCriteriaDTO {
 
     public void setPage(Optional<String> page) {
         this.page = page;
+    }
+
+    public Optional<String> getName() {
+        return name;
+    }
+
+    public void setName(Optional<String> name) {
+        this.name = name;
     }
 
     public Optional<List<String>> getFactory() {

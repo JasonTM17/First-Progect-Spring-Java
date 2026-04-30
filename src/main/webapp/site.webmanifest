@@ -1,0 +1,17 @@
+{
+  "name": "Laptopshop",
+  "short_name": "Laptopshop",
+  "description": "Laptopshop portfolio e-commerce app built with Spring Boot.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff5f6",
+  "theme_color": "#d70018",
+  "icons": [
+    {
+      "src": "/images/branding/laptopshop-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

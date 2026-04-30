@@ -78,8 +78,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
             return;
         }
-        redirectStrategy.sendRedirect(request, response, targetUrl);
         clearAuthenticationAttributes(request, authentication);
+        redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
 }

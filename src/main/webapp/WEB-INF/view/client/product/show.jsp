@@ -1,329 +1,218 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-            <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-                <!DOCTYPE html>
-                <html lang="en">
+<c:set var="catalogTitle" value="Laptop chính hãng" />
+<c:if test="${not empty param.factory}">
+    <c:set var="catalogTitle" value="Laptop ${param.factory}" />
+</c:if>
+<c:if test="${not empty param.name}">
+    <c:set var="catalogTitle" value="Kết quả tìm kiếm" />
+</c:if>
 
-                <head>
-                    <meta charset="utf-8">
-                    <title> Sản Phẩm - Laptopshop</title>
-                    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-                    <meta content="" name="keywords">
-                    <meta content="" name="description">
+<!DOCTYPE html>
+<html lang="vi">
 
-                    <!-- Google Web Fonts -->
-                    <link rel="preconnect" href="https://fonts.googleapis.com">
-                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
-                        rel="stylesheet">
+<head>
+    <title>Sản phẩm - Laptopshop</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-client.jsp" />
+</head>
 
-                    <!-- Icon Font Stylesheet -->
-                    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-                        rel="stylesheet">
+<body class="ls-client">
+    <jsp:include page="../layout/header.jsp" />
 
-                    <!-- Libraries Stylesheet -->
-                    <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-                    <link href="/client/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-
-                    <!-- Customized Bootstrap Stylesheet -->
-                    <link href="/client/css/bootstrap.min.css" rel="stylesheet">
-
-                    <!-- Template Stylesheet -->
-                    <link href="/client/css/style.css" rel="stylesheet">
-
-                    <meta name="_csrf" content="${_csrf.token}" />
-                    <!-- default header name is X-CSRF-TOKEN -->
-                    <meta name="_csrf_header" content="${_csrf.headerName}" />
-
-                    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css"
-                        rel="stylesheet">
-
-
-                    <style>
-                        .page-link.disabled {
-                            color: var(--bs-pagination-disabled-color);
-                            pointer-events: none;
-                            background-color: var(--bs-pagination-disabled-bg);
-                            border-color: var(--bs-pagination-disabled-border-color);
-                        }
-                    </style>
-
-                </head>
-
-                <body>
-
-                    <!-- Spinner Start -->
-                    <div id="spinner"
-                        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-                        <div class="spinner-grow text-primary" role="status"></div>
+    <main class="ls-catalog-page ls-catalog-page--retail">
+        <section class="ls-catalog-top">
+            <div class="ui-container">
+                <nav aria-label="breadcrumb">
+                    <ol class="ui-breadcrumb">
+                        <li><a href="/">Trang chủ</a></li>
+                        <li class="active">Laptop</li>
+                    </ol>
+                </nav>
+                <div class="ls-catalog-titlebar">
+                    <div>
+                        <h1>${catalogTitle}</h1>
+                        <p><strong><fmt:formatNumber type="number" value="${totalProducts}" /></strong> sản phẩm phù hợp · Giá tốt · Giao nhanh · Bảo hành rõ ràng</p>
                     </div>
-                    <!-- Spinner End -->
+                    <button type="button" class="ui-btn ui-btn--outline ls-filter-mobile-btn" data-filter-open>
+                        <i class="bi bi-funnel"></i>
+                        Bộ lọc
+                    </button>
+                </div>
 
-                    <jsp:include page="../layout/header.jsp" />
+                <div class="ls-criteria-strip" aria-label="Chọn theo tiêu chí">
+                    <span>Chọn theo tiêu chí</span>
+                    <a href="/products?factory=APPLE">MacBook</a>
+                    <a href="/products?factory=ASUS">Asus</a>
+                    <a href="/products?factory=DELL">Dell</a>
+                    <a href="/products?target=GAMING">Gaming</a>
+                    <a href="/products?target=SINHVIEN-VANPHONG">Văn phòng</a>
+                    <a href="/products?price=duoi-10-trieu">Dưới 10 triệu</a>
+                    <a href="/products?price=tren-20-trieu">Trên 20 triệu</a>
+                    <a href="/products?target=THIET-KE-DO-HOA">Đồ họa</a>
+                    <button type="button">RAM 16GB</button>
+                    <button type="button">SSD 512GB</button>
+                </div>
 
-                    <!-- Single Product Start -->
-                    <div class="container-fluid py-5 mt-5">
-                        <div class="container py-5">
-                            <div class="row g-4 mb-5">
+                <div class="ls-active-filters" aria-label="Bộ lọc đang áp dụng">
+                    <c:if test="${not empty param.name}">
+                        <span class="ls-filter-chip"><i class="bi bi-search"></i>Từ khóa: <strong><c:out value="${param.name}" /></strong></span>
+                    </c:if>
+                    <c:forEach var="f" items="${paramValues.factory}">
+                        <span class="ls-filter-chip"><i class="bi bi-cpu"></i>Hãng: <strong><c:out value="${f}" /></strong></span>
+                    </c:forEach>
+                    <c:forEach var="t" items="${paramValues.target}">
+                        <span class="ls-filter-chip"><i class="bi bi-person-check"></i>Nhu cầu: <strong><c:out value="${t}" /></strong></span>
+                    </c:forEach>
+                    <c:forEach var="p" items="${paramValues.price}">
+                        <span class="ls-filter-chip"><i class="bi bi-tags"></i>Giá: <strong><c:out value="${p}" /></strong></span>
+                    </c:forEach>
+                    <c:if test="${not empty param.name or not empty param.factory or not empty param.target or not empty param.price or (not empty sort and sort ne 'gia-nothing')}">
+                        <a class="ls-filter-chip ls-filter-chip--reset" href="/products"><i class="bi bi-arrow-counterclockwise"></i>Xóa lọc</a>
+                    </c:if>
+                </div>
+            </div>
+        </section>
+
+        <section class="ls-catalog-body">
+            <div class="ui-container">
+                <div class="ls-catalog-layout">
+                    <aside class="ls-catalog-sidebar" aria-label="Bộ lọc sản phẩm">
+                        <div class="ls-filter" id="lsCatalogFilter">
+                            <div class="ls-filter__head">
                                 <div>
-                                    <nav aria-label="breadcrumb">
-                                        <ol class="breadcrumb">
-                                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Danh Sách Sản Phẩm
-                                            </li>
-                                        </ol>
-                                    </nav>
+                                    <span>Bộ lọc</span>
+                                    <strong>Tìm laptop phù hợp</strong>
                                 </div>
+                                <button type="button" class="ls-filter__close" data-filter-close aria-label="Đóng bộ lọc"><i class="bi bi-x-lg"></i></button>
+                                <a href="/products" class="ls-filter__reset" aria-label="Xóa bộ lọc">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </a>
+                            </div>
 
-                                <div class="row g-4 fruite">
-                                    <div class="col-12 col-md-3">
-                                        <div class="row g-4">
-                                            <div class="col-12" id="factoryFilter">
-                                                <div class="mb-2"><b>Hãng sản xuất</b></div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="factory-1"
-                                                        value="APPLE">
-                                                    <label class="form-check-label" for="factory-1">Apple</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="factory-2"
-                                                        value="ASUS">
-                                                    <label class="form-check-label" for="factory-2">Asus</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="factory-3"
-                                                        value="LENOVO">
-                                                    <label class="form-check-label" for="factory-3">Lenovo</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="factory-4"
-                                                        value="DELL">
-                                                    <label class="form-check-label" for="factory-4">Dell</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="factory-5"
-                                                        value="LG">
-                                                    <label class="form-check-label" for="factory-5">LG</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="factory-6"
-                                                        value="ACER">
-                                                    <label class="form-check-label" for="factory-6">Acer</label>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-12" id="targetFilter">
-                                                <div class="mb-2"><b>Mục đích sử dụng</b></div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="target-1"
-                                                        value="GAMING">
-                                                    <label class="form-check-label" for="target-1">Gaming</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="target-2"
-                                                        value="SINHVIEN-VANPHONG">
-                                                    <label class="form-check-label" for="target-2">Sinh viên - văn
-                                                        phòng</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="target-3"
-                                                        value="THIET-KE-DO-HOA">
-                                                    <label class="form-check-label" for="target-3">Thiết kế đồ
-                                                        họa</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="target-4"
-                                                        value="MONG-NHE">
-                                                    <label class="form-check-label" for="target-4">Mỏng nhẹ</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="target-5"
-                                                        value="DOANH-NHAN">
-                                                    <label class="form-check-label" for="target-5">Doanh nhân</label>
-                                                </div>
-
-
-                                            </div>
-                                            <div class="col-12" id="priceFilter">
-                                                <div class="mb-2"><b>Mức giá</b></div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="price-2"
-                                                        value="duoi-10-trieu">
-                                                    <label class="form-check-label" for="price-2">Dưới 10 triệu</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="price-3"
-                                                        value="10-toi-15-trieu">
-                                                    <label class="form-check-label" for="price-3">Từ 10 - 15
-                                                        triệu</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="price-4"
-                                                        value="15-toi-20-trieu">
-                                                    <label class="form-check-label" for="price-4">Từ 15 - 20
-                                                        triệu</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="price-5"
-                                                        value="tren-20-trieu">
-                                                    <label class="form-check-label" for="price-5">Trên 20 triệu</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="mb-2"><b>Sắp xếp</b></div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <c:choose>
-                                                        <c:when test="${sort eq 'gia-tang-dan'}">
-                                                            <input class="form-check-input" type="radio" id="sort-1"
-                                                                name="radio-sort" value="gia-tang-dan" checked />
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <input class="form-check-input" type="radio" id="sort-1"
-                                                                name="radio-sort" value="gia-tang-dan" />
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <label class="form-check-label" for="sort-1">Giá tăng dần</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" id="sort-2"
-                                                        value="gia-giam-dan" name="radio-sort">
-                                                    <label class="form-check-label" for="sort-2">Giá giảm dần</label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" id="sort-3" checked
-                                                        value="gia-nothing" name="radio-sort">
-                                                    <label class="form-check-label" for="sort-3">Không sắp xếp</label>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-12">
-                                                <button
-                                                    class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4"
-                                                    id="btnFilter">
-                                                    Lọc Sản Phẩm
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-8 text-center">
-                                        <div class="row g-4">
-                                            <c:if test="${totalPages ==0}">
-                                                <div>Không tìm thấy sản phẩm</div>
-                                            </c:if>
-                                            <c:forEach var="product" items="${products}">
-                                                <div class="col-md-6 col-lg-4">
-                                                    <div class="rounded position-relative fruite-item">
-                                                        <div class="fruite-img">
-                                                            <img src="/images/product/${product.image}"
-                                                                class="img-fluid w-100 rounded-top" alt="">
-                                                        </div>
-                                                        <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                                            style="top: 10px; left: 10px;">Laptop
-                                                        </div>
-                                                        <div
-                                                            class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                            <h4 style="font-size: 15px;">
-                                                                <a href="/product/${product.id}">
-                                                                    ${product.name}
-                                                                </a>
-
-                                                            </h4>
-                                                            <p style="font-size: 13px;">
-                                                                ${product.shortDesc}</p>
-                                                            <div
-                                                                class="d-flex  flex-lg-wrap justify-content-center flex-column">
-                                                                <p style="font-size: 15px; text-align: center; width: 100%;"
-                                                                    class="text-dark  fw-bold mb-3">
-                                                                    <fmt:formatNumber type="number"
-                                                                        value="${product.price}" />
-                                                                    đ
-                                                                </p>
-                                                                <!-- <form action="/add-product-to-cart/${product.id}"
-                                                                    method="post">
-                                                                    <input type="hidden" name="${_csrf.parameterName}"
-                                                                        value="${_csrf.token}" /> -->
-
-                                                                <button type="button" data-product-id="${product.id}"
-                                                                    class="btnAddToCartHomepage mx-auto btn border border-success">
-                                                                    <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                                    Add to cart
-                                                                </button>
-                                                                <!-- </form> -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                            <c:if test="${totalPages >0}">
-                                                <div class="pagination d-flex justify-content-center mt-5">
-                                                    <li class="page-item">
-                                                        <a class="${1 eq currentPage ? 'disabled page-link' : 'page-link'}"
-                                                            href="/products?page=${currentPage - 1}${queryString}"
-                                                            aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
-                                                        <li class="page-item">
-                                                            <a class="${(loop.index + 1) eq currentPage ? 'active page-link' : 'page-link'}"
-                                                                href="/products?page=${loop.index + 1}${queryString}">
-                                                                ${loop.index + 1}
-                                                            </a>
-                                                        </li>
-                                                    </c:forEach>
-                                                    <li class="page-item">
-                                                        <a class="${totalPages eq currentPage ? 'disabled page-link' : 'page-link'}"
-                                                            href="/products?page=${currentPage + 1}${queryString}"
-                                                            aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                        </a>
-                                                    </li>
-
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                    </div>
+                            <div class="ls-filter__group" id="factoryFilter">
+                                <h3 class="ls-filter__title"><i class="bi bi-cpu"></i>Hãng sản xuất</h3>
+                                <div class="ls-filter__options">
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="APPLE" /><span>Apple</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="ASUS" /><span>Asus</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="DELL" /><span>Dell</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="LENOVO" /><span>Lenovo</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="ACER" /><span>Acer</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="LG" /><span>LG</span></label>
                                 </div>
                             </div>
+
+                            <div class="ls-filter__group" id="targetFilter">
+                                <h3 class="ls-filter__title"><i class="bi bi-person-check"></i>Nhu cầu sử dụng</h3>
+                                <div class="ls-filter__options">
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="GAMING" /><span>Gaming</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="SINHVIEN-VANPHONG" /><span>Sinh viên - Văn phòng</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="THIET-KE-DO-HOA" /><span>Thiết kế đồ họa</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="MONG-NHE" /><span>Mỏng nhẹ</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="DOANH-NHAN" /><span>Doanh nhân</span></label>
+                                </div>
+                            </div>
+
+                            <div class="ls-filter__group" id="priceFilter">
+                                <h3 class="ls-filter__title"><i class="bi bi-tags"></i>Khoảng giá</h3>
+                                <div class="ls-filter__options">
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="duoi-10-trieu" /><span>Dưới 10 triệu</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="10-toi-15-trieu" /><span>10 - 15 triệu</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="15-toi-20-trieu" /><span>15 - 20 triệu</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="checkbox" value="tren-20-trieu" /><span>Trên 20 triệu</span></label>
+                                </div>
+                            </div>
+
+                            <div class="ls-filter__group">
+                                <h3 class="ls-filter__title"><i class="bi bi-sort-down"></i>Sắp xếp</h3>
+                                <div class="ls-filter__options">
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="radio" name="radio-sort" value="gia-nothing" ${empty sort or sort eq 'gia-nothing' ? 'checked' : ''} /><span>Phổ biến</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="radio" name="radio-sort" value="gia-giam-dan" ${sort eq 'gia-giam-dan' ? 'checked' : ''} /><span>Khuyến mãi HOT</span></label>
+                                    <label class="ls-filter__opt"><input class="form-check-input" type="radio" name="radio-sort" value="gia-tang-dan" ${sort eq 'gia-tang-dan' ? 'checked' : ''} /><span>Giá Thấp - Cao</span></label>
+                                </div>
+                            </div>
+
+                            <button id="btnFilter" class="ui-btn ui-btn--block ls-filter__apply">
+                                <i class="bi bi-funnel"></i>
+                                Áp dụng bộ lọc
+                            </button>
                         </div>
+                    </aside>
+
+                    <div class="ls-catalog-results">
+                        <div class="ls-sort-toolbar ls-sort-toolbar--retail">
+                            <div class="ls-sort-toolbar__count">
+                                <span>Đang hiển thị <strong>${empty products ? 0 : products.size()}</strong>/<strong><fmt:formatNumber type="number" value="${totalProducts}" /></strong> sản phẩm</span>
+                                <c:if test="${totalPages > 0}">
+                                    <small>Trang ${currentPage}/${totalPages}</small>
+                                </c:if>
+                            </div>
+                            <div class="ls-sort-pills" aria-label="Sắp xếp nhanh">
+                                <button type="button" class="${empty sort or sort eq 'gia-nothing' ? 'is-active' : ''}" data-sort-value="gia-nothing">Phổ biến</button>
+                                <button type="button" class="${sort eq 'gia-giam-dan' ? 'is-active' : ''}" data-sort-value="gia-giam-dan">Khuyến mãi HOT</button>
+                                <button type="button" class="${sort eq 'gia-tang-dan' ? 'is-active' : ''}" data-sort-value="gia-tang-dan">Giá Thấp - Cao</button>
+                            </div>
+                            <div class="ls-view-toggle" role="tablist" aria-label="Chế độ hiển thị">
+                                <button type="button" class="is-active" data-view="grid" aria-label="Hiển thị dạng lưới"><i class="bi bi-grid"></i></button>
+                                <button type="button" data-view="list" aria-label="Hiển thị dạng danh sách"><i class="bi bi-list-ul"></i></button>
+                            </div>
+                        </div>
+
+                        <c:choose>
+                            <c:when test="${empty products or totalPages eq 0}">
+                                <div class="ls-catalog-empty">
+                                    <div class="ui-empty__icon"><i class="bi bi-search"></i></div>
+                                    <p class="ui-empty__title">Không tìm thấy sản phẩm phù hợp</p>
+                                    <p class="ui-empty__desc">Hãy thử từ khóa khác, bỏ bớt bộ lọc hoặc xem toàn bộ laptop đang bán.</p>
+                                    <a href="/products" class="ui-btn ui-btn--outline"><i class="bi bi-arrow-counterclockwise"></i>Xóa bộ lọc</a>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="ls-prod-grid" id="productGrid">
+                                    <c:forEach var="p" items="${products}">
+                                        <c:set var="product" value="${p}" scope="request" />
+                                        <jsp:include page="/WEB-INF/view/fragments/product-card.jsp" />
+                                    </c:forEach>
+                                </div>
+
+                                <c:if test="${totalPages > 0}">
+                                    <nav class="ui-pagination ls-catalog-pagination" aria-label="Phân trang sản phẩm">
+                                        <c:choose>
+                                            <c:when test="${currentPage <= 1}">
+                                                <span class="page is-disabled" aria-label="Trang trước"><i class="bi bi-chevron-left"></i></span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="/products?page=${currentPage - 1}${queryString}" aria-label="Trang trước"><i class="bi bi-chevron-left"></i></a>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <c:forEach begin="0" end="${totalPages - 1}" varStatus="loop">
+                                            <a class="${(loop.index + 1) eq currentPage ? 'is-active' : ''}" href="/products?page=${loop.index + 1}${queryString}">${loop.index + 1}</a>
+                                        </c:forEach>
+
+                                        <c:choose>
+                                            <c:when test="${currentPage >= totalPages}">
+                                                <span class="page is-disabled" aria-label="Trang sau"><i class="bi bi-chevron-right"></i></span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="/products?page=${currentPage + 1}${queryString}" aria-label="Trang sau"><i class="bi bi-chevron-right"></i></a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </nav>
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
-                    <!-- Single Product End -->
+                </div>
+            </div>
+        </section>
+        <div class="ls-filter-backdrop" data-filter-close hidden></div>
+    </main>
 
-                    <jsp:include page="../layout/footer.jsp" />
+    <jsp:include page="../layout/footer.jsp" />
+    <jsp:include page="/WEB-INF/view/fragments/scripts-client.jsp" />
+    <script src="/client/js/main.js"></script>
+</body>
 
-
-                    <!-- Back to Top -->
-                    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-                            class="fa fa-arrow-up"></i></a>
-
-
-                    <!-- JavaScript Libraries -->
-                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-                    <script src="/client/lib/easing/easing.min.js"></script>
-                    <script src="/client/lib/waypoints/waypoints.min.js"></script>
-                    <script src="/client/lib/lightbox/js/lightbox.min.js"></script>
-                    <script src="/client/lib/owlcarousel/owl.carousel.min.js"></script>
-
-                    <!-- Template Javascript -->
-                    <script src="/client/js/main.js"></script>
-                    <script
-                        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"> </script>
-                </body>
-
-                </html>
+</html>

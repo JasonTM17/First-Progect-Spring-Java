@@ -11,7 +11,7 @@ public class ProductSpecs {
     public static Specification<Product> nameLike(String name) {
         return (root, query, cb)
                 -> cb.like(
-                        root.get("name"), "%" + name + "%"
+                        cb.lower(root.get("name")), "%" + name.toLowerCase() + "%"
                 );
     }
 

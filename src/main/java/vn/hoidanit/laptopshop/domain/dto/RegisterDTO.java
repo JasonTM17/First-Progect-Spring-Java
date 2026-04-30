@@ -1,23 +1,31 @@
 package vn.hoidanit.laptopshop.domain.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import vn.hoidanit.laptopshop.service.validator.RegisterChecked;
 
 @RegisterChecked
 public class RegisterDTO {
 
-    @Size(min = 3, message = "FirstName phải có tối thiểu 3 ký tự")
+    @NotBlank(message = "Họ không được để trống")
+    @Size(min = 2, message = "Họ phải có tối thiểu 2 ký tự")
     private String firstName;
 
+    @NotBlank(message = "Tên không được để trống")
+    @Size(min = 2, message = "Tên phải có tối thiểu 2 ký tự")
     private String lastName;
 
+    @NotBlank(message = "Email không được để trống")
     @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
+    @NotBlank(message = "Mật khẩu không được để trống")
+    @Size(min = 6, message = "Mật khẩu phải có tối thiểu 6 ký tự")
     private String password;
 
-    @Size(min = 3, message = "confirmPassword phải có tối thiểu 3 ký tự")
+    @NotBlank(message = "Xác nhận mật khẩu không được để trống")
+    @Size(min = 6, message = "Xác nhận mật khẩu phải có tối thiểu 6 ký tự")
     private String confirmPassword;
 
     public String getFirstName() {
@@ -59,5 +67,4 @@ public class RegisterDTO {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
-
 }

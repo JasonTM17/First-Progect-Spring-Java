@@ -1,52 +1,39 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <!DOCTYPE html>
-        <html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-        <head>
-            <meta charset="utf-8" />
-            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-            <title>403 - Access Denied</title>
+<!DOCTYPE html>
+<html lang="vi">
 
-            <link href="/css/styles.css" rel="stylesheet" />
-            <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        </head>
+<head>
+    <title>403 - Truy cập bị từ chối</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-client.jsp" />
+</head>
 
-        <body class="bg-primary">
-
-            <div class="container vh-100 d-flex align-items-center justify-content-center">
-                <div class="card shadow-lg border-0" style="max-width: 520px; width: 100%;">
-                    <div class="card-body text-center p-5">
-
-                        <div class="mb-4">
-                            <i class="fas fa-ban fa-4x text-danger"></i>
-                        </div>
-
-                        <h1 class="fw-bold text-danger">403</h1>
-                        <h4 class="mb-3">Truy cập bị từ chối</h4>
-
-                        <p class="text-muted mb-4">
-                            Bạn không có quyền truy cập vào tài nguyên này.<br />
-                            Vui lòng quay lại hoặc liên hệ quản trị viên.
-                        </p>
-
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="/" class="btn btn-success">
-                                <i class="fas fa-home me-1"></i> Trang chủ
-                            </a>
-                            <a href="/login" class="btn btn-outline-secondary">
-                                <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
+<body class="ls-client" style="padding-top: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(1200px 500px at 10% 0%, #fee2e2 0%, transparent 60%), radial-gradient(900px 400px at 90% 100%, #fff1d6 0%, transparent 60%), linear-gradient(180deg, #fafbff 0%, #fff 100%);">
+    <div class="ui-container" style="max-width: 640px; padding: var(--space-8) var(--space-4);">
+        <div class="ui-card ui-slide-up" style="padding: var(--space-12) var(--space-8); text-align: center;">
+            <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #fee2e2, #fecaca); display: inline-flex; align-items: center; justify-content: center; font-size: 56px; color: var(--danger-600); margin-bottom: var(--space-5); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0.12);">
+                <i class="bi bi-shield-exclamation"></i>
             </div>
+            <div style="font-size: 4rem; font-weight: 900; line-height: 1; color: var(--danger-600); margin-bottom: var(--space-2); font-family: var(--font-display);">403</div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0 0 var(--space-3); color: var(--text);">Truy cập bị từ chối</h1>
+            <p style="color: var(--text-muted); max-width: 420px; margin: 0 auto var(--space-6); line-height: 1.6;">
+                Bạn không có quyền truy cập vào tài nguyên này. Vui lòng quay lại hoặc liên hệ quản trị viên nếu bạn nghĩ đây là nhầm lẫn.
+            </p>
+            <div style="display: flex; gap: var(--space-3); justify-content: center; flex-wrap: wrap;">
+                <a href="/" class="ui-btn ui-btn--lg">
+                    <i class="bi bi-house"></i>
+                    Về trang chủ
+                </a>
+                <a href="/login" class="ui-btn ui-btn--secondary ui-btn--lg">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Đăng nhập
+                </a>
+            </div>
+        </div>
+    </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                crossorigin="anonymous"></script>
-            <script src="/js/scripts.js"></script>
-        </body>
+    <jsp:include page="/WEB-INF/view/fragments/scripts-client.jsp" />
+</body>
 
-        </html>
+</html>

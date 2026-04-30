@@ -1,171 +1,147 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-            <!DOCTYPE html>
-            <html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
-            <head>
-                <meta charset="utf-8" />
-                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Nguyễn Sơn - Dự án laptopshop" />
-                <title>Create Product - Nguyễn Sơn</title>
-                <link href="/css/styles.css" rel="stylesheet" />
-                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-                <script>
-                    $(document).ready(() => {
-                        const avatarFile = $("#avatarFile");
-                        const orgImage = "${newProduct.image}";
+<!DOCTYPE html>
+<html lang="vi">
 
-                        if (orgImage) {
-                            const urlImage = "/images/product/" + orgImage;
-                            $("#avatarPreview").attr("src", urlImage);
-                            $("#avatarPreview").css({ "display": "block" });
-                        }
+<head>
+    <title>Cập nhật sản phẩm - Laptopshop Admin</title>
+    <jsp:include page="/WEB-INF/view/fragments/head-admin.jsp" />
+</head>
 
-                        avatarFile.change(function (e) {
-                            const imgURL = URL.createObjectURL(e.target.files[0]);
-                            $("#avatarPreview").attr("src", imgURL);
-                            $("#avatarPreview").css({ "display": "block" });
-                        });
-                    });
-                </script>
+<body class="ls-admin">
+    <jsp:include page="../layout/header.jsp" />
+    <jsp:include page="../layout/sidebar.jsp" />
 
-                <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-            </head>
+    <main class="la-main">
+        <header class="la-page-head">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="ui-breadcrumb" style="margin-bottom: 4px;">
+                        <li><a href="/admin">Admin</a></li>
+                        <li><a href="/admin/product">Sản phẩm</a></li>
+                        <li class="active">Cập nhật</li>
+                    </ol>
+                </nav>
+                <h1 class="la-page-head__title">Cập nhật sản phẩm</h1>
+                <p class="la-page-head__desc">Chỉnh sửa thông tin sản phẩm</p>
+            </div>
+            <div class="la-page-head__actions">
+                <a href="/admin/product" class="ui-btn ui-btn--ghost"><i class="bi bi-arrow-left"></i> Quay lại</a>
+            </div>
+        </header>
 
-            <body class="sb-nav-fixed">
-                <jsp:include page="../layout/header.jsp" />
-                <div id="layoutSidenav">
-                    <jsp:include page="../layout/sidebar.jsp" />
-                    <div id="layoutSidenav_content">
-                        <main>
-                            <div class="container-fluid px-4">
-                                <h1 class="mt-4">Products</h1>
-                                <ol class="breadcrumb mb-4">
-                                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="/admin/product">Products</a></li>
-                                    <li class="breadcrumb-item active">Update</li>
-                                </ol>
-                                <div class="mt-5">
-                                    <div class="row">
-                                        <div class="col-md-6 col-12 mx-auto">
-                                            <h3>Update a product</h3>
-                                            <hr>
-                                            <form:form method="post" action="/admin/product/update"
-                                                modelAttribute="newProduct" class="row" enctype="multipart/form-data">
+        <form:form method="post" action="/admin/product/update" modelAttribute="newProduct" enctype="multipart/form-data">
+            <form:input type="hidden" path="id" />
+            <c:set var="errorName"><form:errors path="name" cssClass="invalid-feedback" /></c:set>
+            <c:set var="errorPrice"><form:errors path="price" cssClass="invalid-feedback" /></c:set>
+            <c:set var="errorDetailDesc"><form:errors path="detailDesc" cssClass="invalid-feedback" /></c:set>
+            <c:set var="errorShortDesc"><form:errors path="shortDesc" cssClass="invalid-feedback" /></c:set>
+            <c:set var="errorQuantity"><form:errors path="quantity" cssClass="invalid-feedback" /></c:set>
 
-                                                <c:set var="errorName">
-                                                    <form:errors path="name" cssClass="invalid-feedback" />
-                                                </c:set>
+            <div class="la-form-layout">
+                <div>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Thông tin cơ bản</h3>
+                        <p class="la-form-section__desc">Tên, mô tả và thông tin hiển thị</p>
+                        <div style="margin-bottom: var(--space-3);">
+                            <label class="form-label">Tên sản phẩm <span style="color:var(--danger-500)">*</span></label>
+                            <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}" path="name" />
+                            ${errorName}
+                        </div>
+                        <div style="margin-bottom: var(--space-3);">
+                            <label class="form-label">Mô tả ngắn</label>
+                            <form:input type="text" class="form-control ${not empty errorShortDesc ? 'is-invalid' : ''}" path="shortDesc" />
+                            ${errorShortDesc}
+                        </div>
+                        <div>
+                            <label class="form-label">Mô tả chi tiết</label>
+                            <form:textarea class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}" path="detailDesc" rows="6" />
+                            ${errorDetailDesc}
+                        </div>
+                    </section>
 
-                                                <c:set var="errorPrice">
-                                                    <form:errors path="price" cssClass="invalid-feedback" />
-                                                </c:set>
-
-                                                <c:set var="errorDetailDesc">
-                                                    <form:errors path="detailDesc" cssClass="invalid-feedback" />
-                                                </c:set>
-
-                                                <c:set var="errorShortDesc">
-                                                    <form:errors path="shortDesc" cssClass="invalid-feedback" />
-                                                </c:set>
-
-                                                <c:set var="errorQuantity">
-                                                    <form:errors path="quantity" cssClass="invalid-feedback" />
-                                                </c:set>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Name:</label>
-                                                    <form:input type="text"
-                                                        class="form-control ${not empty errorName ? 'is-invalid' : ''}"
-                                                        path="name" />
-                                                    ${errorName}
-                                                </div>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Price:</label>
-                                                    <form:input type="number"
-                                                        class="form-control ${not empty errorPrice ? 'is-invalid' : ''}"
-                                                        path="price" />
-                                                    ${errorPrice}
-                                                </div>
-
-                                                <div class="mb-3 col-12">
-                                                    <label class="form-label">Detail description:</label>
-                                                    <form:textarea
-                                                        class="form-control ${not empty errorDetailDesc ? 'is-invalid' : ''}"
-                                                        path="detailDesc" />
-                                                    ${errorDetailDesc}
-                                                </div>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Short description:</label>
-                                                    <form:input type="text"
-                                                        class="form-control ${not empty errorShortDesc ? 'is-invalid' : ''}"
-                                                        path="shortDesc" />
-                                                    ${errorShortDesc}
-                                                </div>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Quantity:</label>
-                                                    <form:input type="number"
-                                                        class="form-control ${not empty errorQuantity ? 'is-invalid' : ''}"
-                                                        path="quantity" />
-                                                    ${errorQuantity}
-                                                </div>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Factory:</label>
-                                                    <form:select class="form-select" path="factory">
-                                                        <form:option value="APPLE">Apple (MacBook)</form:option>
-                                                        <form:option value="ASUS">Asus</form:option>
-                                                        <form:option value="LENOVO">Lenovo</form:option>
-                                                        <form:option value="DELL">Dell</form:option>
-                                                        <form:option value="LG">LG</form:option>
-                                                        <form:option value="ACER">Acer</form:option>
-                                                    </form:select>
-                                                </div>
-
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label class="form-label">Target:</label>
-                                                    <form:select class="form-select" path="target">
-                                                        <form:option value="GAMING">Gaming</form:option>
-                                                        <form:option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
-                                                        </form:option>
-                                                        <form:option value="THIET-KE-DO-HOA">Thiết kế đồ họa
-                                                        </form:option>
-                                                        <form:option value="MONG-NHE">Mỏng nhẹ</form:option>
-                                                        <form:option value="DOANH-NHAN">Doanh nhân</form:option>
-                                                    </form:select>
-                                                </div>
-                                                <div class="mb-3 col-12 col-md-6">
-                                                    <label for="avatarFile" class="form-label">Image:</label>
-                                                    <input class="form-control" type="file" id="avatarFile"
-                                                        name="hoidanitFile" accept=".png,.jpg,.jpeg" />
-                                                </div>
-
-                                                <div class="col-12 mb-3">
-                                                    <img style="max-height: 250px; display: none;" alt="avatar preview"
-                                                        id="avatarPreview" />
-                                                </div>
-                                                <div class="col-12 mb-5">
-                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                </div>
-                                            </form:form>
-                                        </div>
-                                    </div>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Giá & kho</h3>
+                        <p class="la-form-section__desc">Cập nhật giá và số lượng tồn</p>
+                        <div class="la-form-row">
+                            <div>
+                                <label class="form-label">Giá bán <span style="color:var(--danger-500)">*</span></label>
+                                <div class="input-group">
+                                    <form:input type="number" step="any" class="form-control ${not empty errorPrice ? 'is-invalid' : ''}" path="price" />
+                                    <span class="input-group-text">₫</span>
                                 </div>
+                                ${errorPrice}
                             </div>
-                        </main>
-                        <jsp:include page="../layout/footer.jsp" />
-                    </div>
+                            <div>
+                                <label class="form-label">Số lượng <span style="color:var(--danger-500)">*</span></label>
+                                <form:input type="number" class="form-control ${not empty errorQuantity ? 'is-invalid' : ''}" path="quantity" />
+                                ${errorQuantity}
+                            </div>
+                        </div>
+                    </section>
                 </div>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-                    crossorigin="anonymous"></script>
-                <script src="js/scripts.js"></script>
 
-            </body>
+                <div>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Phân loại</h3>
+                        <p class="la-form-section__desc">Hãng sản xuất và mục đích sử dụng</p>
+                        <div style="margin-bottom: var(--space-3);">
+                            <label class="form-label">Hãng sản xuất</label>
+                            <form:select class="form-select" path="factory">
+                                <form:option value="APPLE">Apple (MacBook)</form:option>
+                                <form:option value="ASUS">Asus</form:option>
+                                <form:option value="LENOVO">Lenovo</form:option>
+                                <form:option value="DELL">Dell</form:option>
+                                <form:option value="LG">LG</form:option>
+                                <form:option value="ACER">Acer</form:option>
+                            </form:select>
+                        </div>
+                        <div>
+                            <label class="form-label">Mục đích sử dụng</label>
+                            <form:select class="form-select" path="target">
+                                <form:option value="GAMING">Gaming</form:option>
+                                <form:option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng</form:option>
+                                <form:option value="THIET-KE-DO-HOA">Thiết kế đồ họa</form:option>
+                                <form:option value="MONG-NHE">Mỏng nhẹ</form:option>
+                                <form:option value="DOANH-NHAN">Doanh nhân</form:option>
+                            </form:select>
+                        </div>
+                    </section>
 
-            </html>
+                    <section class="la-form-section">
+                        <h3 class="la-form-section__title">Ảnh sản phẩm</h3>
+                        <p class="la-form-section__desc">Kéo thả ảnh mới để thay thế</p>
+                        <div class="la-uploader ${not empty newProduct.image ? 'has-file' : ''}">
+                            <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg" name="hoidanitFile" />
+                            <div class="la-uploader__placeholder">
+                                <div class="la-uploader__icon"><i class="bi bi-image"></i></div>
+                                <p class="la-uploader__title">Kéo & thả ảnh hoặc nhấp để chọn</p>
+                                <p class="la-uploader__desc">PNG / JPG / JPEG</p>
+                            </div>
+                            <c:if test="${not empty newProduct.image}">
+                                <img class="la-uploader__preview" id="avatarPreview" alt="" src="/images/product/${newProduct.image}" />
+                            </c:if>
+                            <c:if test="${empty newProduct.image}">
+                                <img class="la-uploader__preview" id="avatarPreview" alt="" /></c:if>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="la-form-actions">
+                <a href="/admin/product" class="ui-btn ui-btn--secondary">Huỷ</a>
+                <button type="submit" class="ui-btn">
+                    <i class="bi bi-check2"></i> Lưu thay đổi
+                </button>
+            </div>
+        </form:form>
+
+        <jsp:include page="../layout/footer.jsp" />
+    </main>
+
+    <jsp:include page="/WEB-INF/view/fragments/scripts-admin.jsp" />
+</body>
+
+</html>

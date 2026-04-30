@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Laptopshop portfolio cover</title>
+  <desc id="desc">A branded social preview image for the Laptopshop Spring Boot portfolio project.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fff5f6"/>
+      <stop offset="100%" stop-color="#ffe1e5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="64" y="54" width="1072" height="522" rx="36" fill="#ffffff"/>
+  <rect x="64" y="54" width="1072" height="522" rx="36" fill="none" stroke="#f3c7cd" stroke-width="4"/>
+  <rect x="112" y="112" width="364" height="406" rx="28" fill="#d70018"/>
+  <rect x="162" y="182" width="264" height="158" rx="20" fill="#ffffff"/>
+  <rect x="182" y="202" width="224" height="118" rx="12" fill="#fff1f3"/>
+  <rect x="140" y="372" width="308" height="24" rx="12" fill="#ffffff"/>
+  <rect x="176" y="430" width="104" height="40" rx="20" fill="#ffffff" opacity="0.88"/>
+  <rect x="296" y="430" width="104" height="40" rx="20" fill="#ffccd3"/>
+  <path d="M255 220h42v63h74v24h-116z" fill="#d70018"/>
+  <text x="520" y="208" fill="#8a0b16" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">SPRING BOOT E-COMMERCE PORTFOLIO</text>
+  <text x="520" y="294" fill="#111827" font-family="Inter, Arial, sans-serif" font-size="76" font-weight="800">Laptopshop</text>
+  <text x="520" y="354" fill="#3f3f46" font-family="Inter, Arial, sans-serif" font-size="32">UI/UX retail style, checkout ro rang, admin dashboard,</text>
+  <text x="520" y="398" fill="#3f3f46" font-family="Inter, Arial, sans-serif" font-size="32">testable workflows, demo accounts va local auto seed.</text>
+  <rect x="520" y="450" width="182" height="52" rx="14" fill="#d70018"/>
+  <text x="611" y="484" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Laptopshop</text>
+  <rect x="722" y="450" width="212" height="52" rx="14" fill="#fff1f3" stroke="#f3c7cd" stroke-width="2"/>
+  <text x="828" y="484" text-anchor="middle" fill="#8a0b16" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Java 17 + Spring Boot</text>
+  <text x="520" y="542" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Portfolio-ready storefront for recruiter demos and technical review.</text>
+</svg>

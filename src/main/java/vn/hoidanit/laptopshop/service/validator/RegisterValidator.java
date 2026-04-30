@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.service.validator;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.ConstraintValidator;
@@ -18,26 +20,28 @@ public class RegisterValidator implements ConstraintValidator<RegisterChecked, R
 
     @Override
     public boolean isValid(RegisterDTO user, ConstraintValidatorContext context) {
+        if (user == null) {
+            return true;
+        }
+
         boolean valid = true;
 
-        // Check if password fields match
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
-            context.buildConstraintViolationWithTemplate("Passwords nhập không chính xác")
+        if (!Objects.equals(user.getPassword(), user.getConfirmPassword())) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Xác nhận mật khẩu không khớp")
                     .addPropertyNode("confirmPassword")
-                    .addConstraintViolation()
-                    .disableDefaultConstraintViolation();
+                    .addConstraintViolation();
             valid = false;
         }
 
-        // Additional validations can be added here
-        // checkEmail
-        if (this.userService.checkEmailExist(user.getEmail())) {
+        if (user.getEmail() != null && this.userService.checkEmailExist(user.getEmail())) {
+            context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate("Email đã tồn tại.")
                     .addPropertyNode("email")
                     .addConstraintViolation();
-            context.disableDefaultConstraintViolation();
             valid = false;
         }
+
         return valid;
     }
 }

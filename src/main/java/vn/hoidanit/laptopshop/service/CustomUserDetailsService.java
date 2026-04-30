@@ -20,7 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
         vn.hoidanit.laptopshop.domain.User user = this.userService.getUserByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("user not found");

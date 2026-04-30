@@ -1,41 +1,56 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Features</div>
-                        <a class="nav-link" href="/admin">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-                        <a class="nav-link" href="/admin/user">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            User
-                        </a>
+<c:set var="__path" value="${requestScope['javax.servlet.forward.request_uri']}" />
 
-                        <a class="nav-link" href="/admin/product">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Product
-                        </a>
+<aside class="la-sidebar" id="adminSidebar">
+    <div>
+        <div class="la-sidebar__section">Tổng quan</div>
+        <nav class="la-nav">
+            <a class="la-nav__item ${__path eq '/admin' or __path eq '/admin/' ? 'is-active' : ''}" href="/admin">
+                <span class="la-nav__icon"><i class="bi bi-speedometer2"></i></span>
+                Dashboard
+            </a>
+        </nav>
+    </div>
 
-                        <a class="nav-link" href="/admin/order">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Order
-                        </a>
-                        <a class="nav-link" href="/admin/account">
-                            <div class="sb-nav-link-icon">
-                                <i class="fas fa-user-cog"></i>
-                            </div>
-                            Quản lý tài khoản
-                        </a>
+    <div>
+        <div class="la-sidebar__section">Quản lý</div>
+        <nav class="la-nav">
+            <a class="la-nav__item ${fn:startsWith(__path, '/admin/user') ? 'is-active' : ''}" href="/admin/user">
+                <span class="la-nav__icon"><i class="bi bi-people"></i></span>
+                Người dùng
+            </a>
+            <a class="la-nav__item ${fn:startsWith(__path, '/admin/product') ? 'is-active' : ''}" href="/admin/product">
+                <span class="la-nav__icon"><i class="bi bi-box-seam"></i></span>
+                Sản phẩm
+            </a>
+            <a class="la-nav__item ${fn:startsWith(__path, '/admin/order') ? 'is-active' : ''}" href="/admin/order">
+                <span class="la-nav__icon"><i class="bi bi-receipt"></i></span>
+                Đơn hàng
+            </a>
+        </nav>
+    </div>
 
-                    </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    Nguyễn Sơn
-                </div>
-            </nav>
-        </div>
+    <div>
+        <div class="la-sidebar__section">Hệ thống</div>
+        <nav class="la-nav">
+            <a class="la-nav__item ${fn:startsWith(__path, '/admin/account') ? 'is-active' : ''}" href="/admin/account">
+                <span class="la-nav__icon"><i class="bi bi-person-gear"></i></span>
+                Tài khoản của tôi
+            </a>
+            <a class="la-nav__item" href="/" target="_blank">
+                <span class="la-nav__icon"><i class="bi bi-box-arrow-up-right"></i></span>
+                Xem site khách
+            </a>
+        </nav>
+    </div>
+
+    <div class="la-sidebar__foot">
+        <strong><c:out value="${pageContext.request.userPrincipal.name}" default="Admin" /></strong>
+        <span>Quản trị viên</span>
+    </div>
+</aside>
+
+<div class="la-sidebar-backdrop" id="adminSidebarBackdrop"></div>

@@ -1,17 +1,20 @@
-version: "3.8"
-
 services:
   db-mysql:
     image: mysql:5.7.40
     container_name: mysql-laptopshop
     restart: always
     environment:
-      MYSQL_DATABASE: laptopshop
-      MYSQL_ROOT_PASSWORD: 172606
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-laptopshop}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-laptopshop_dev_password}
     ports:
       - "3307:3306"
     expose:
       - "3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   app:
     container_name: spring-mvc-app
@@ -21,9 +24,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db-mysql:3306/laptopshop
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 172606
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: local
+      MYSQL_HOST: db-mysql
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-laptopshop}
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-laptopshop_dev_password}
+      JPA_DDL_AUTO: update
+      APP_DEMO_SEED: true
+      SPRING_SESSION_JDBC_INITIALIZE_SCHEMA: always
     depends_on:
-      - db-mysql
+      db-mysql:
+        condition: service_healthy

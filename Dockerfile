@@ -1,23 +1,24 @@
-# Start with a base image containing Java runtime and Maven
-FROM maven:3.8.4-openjdk-17 as build
+FROM public.ecr.aws/docker/library/eclipse-temurin:17-jdk AS build
 
-# Copy the project files into the container
-COPY src /nguyenson/spring-mvc/src
-COPY pom.xml /nguyenson/spring-mvc
+WORKDIR /workspace
 
-# Set the working directory
-WORKDIR /nguyenson/spring-mvc
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+RUN chmod +x mvnw && ./mvnw -B -DskipTests dependency:go-offline
 
-# Build the application as a WAR file and skip tests
-RUN mvn clean package -DskipTests
+COPY src src
+RUN ./mvnw -B -DskipTests package
 
-FROM openjdk:17-slim
+FROM public.ecr.aws/docker/library/eclipse-temurin:17-jre
 
-# Copy WAR file to the webapps directory in Tomcat
-# Ensure that the path to the WAR file matches the actual file name generated
-COPY --from=build /nguyenson/spring-mvc/target/*.war /nguyenson/spring-mvc/app.war
+WORKDIR /app
+
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV PORT=8080
+ENV JAVA_OPTS=""
+
+COPY --from=build /workspace/target/*.war /app/laptopshop.war
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/nguyenson/spring-mvc/app.war"]
-
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/laptopshop.war"]

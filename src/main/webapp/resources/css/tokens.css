@@ -1,0 +1,186 @@
+/* =========================================================
+   Laptopshop Design Tokens
+   Modern e-commerce / dashboard design system
+   ========================================================= */
+
+:root {
+    /* ---------- Color palette ---------- */
+    --brand-50:  #fff1f2;
+    --brand-100: #ffe4e6;
+    --brand-200: #fecdd3;
+    --brand-300: #fda4af;
+    --brand-400: #fb7185;
+    --brand-500: #ef233c;
+    --brand-600: #d70018;
+    --brand-700: #b90015;
+    --brand-800: #8f0010;
+    --brand-900: #64000b;
+
+    --accent-400: #fbbf24;
+    --accent-500: #f59e0b;
+    --accent-600: #d97706;
+
+    --success-500: #10b981;
+    --success-600: #059669;
+    --warning-500: #f59e0b;
+    --danger-500:  #ef4444;
+    --danger-600:  #dc2626;
+    --info-500:    #06b6d4;
+
+    --slate-50:  #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+
+    /* ---------- Semantic aliases ---------- */
+    --primary:       var(--brand-600);
+    --primary-hover: var(--brand-700);
+    --primary-soft:  var(--brand-50);
+    --accent:        var(--accent-500);
+
+    --bg:            #f5f5f7;
+    --bg-muted:      #f2f3f5;
+    --surface:       #ffffff;
+    --surface-alt:   var(--slate-50);
+    --border:        var(--slate-200);
+    --border-strong: var(--slate-300);
+
+    --text:          var(--slate-900);
+    --text-muted:    var(--slate-500);
+    --text-subtle:   var(--slate-400);
+    --text-invert:   #ffffff;
+
+    /* ---------- Spacing scale (4px base) ---------- */
+    --space-1:  4px;
+    --space-2:  8px;
+    --space-3:  12px;
+    --space-4:  16px;
+    --space-5:  20px;
+    --space-6:  24px;
+    --space-8:  32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+
+    /* ---------- Radius ---------- */
+    --radius-sm:   6px;
+    --radius:      8px;
+    --radius-md:   8px;
+    --radius-lg:   10px;
+    --radius-xl:   12px;
+    --radius-2xl:  14px;
+    --radius-full: 9999px;
+
+    /* ---------- Shadow ---------- */
+    --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow:    0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+    --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.1),  0 8px 10px -6px rgba(15, 23, 42, 0.05);
+    --shadow-xl: 0 25px 50px -12px rgba(15, 23, 42, 0.18);
+    --shadow-ring: 0 0 0 4px rgba(215, 0, 24, 0.16);
+
+    /* ---------- Typography ---------- */
+    --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+
+    --fs-xs:   0.75rem;   /* 12 */
+    --fs-sm:   0.875rem;  /* 14 */
+    --fs-base: 1rem;      /* 16 */
+    --fs-lg:   1.125rem;  /* 18 */
+    --fs-xl:   1.25rem;   /* 20 */
+    --fs-2xl:  1.5rem;    /* 24 */
+    --fs-3xl:  1.875rem;  /* 30 */
+    --fs-4xl:  2.25rem;   /* 36 */
+    --fs-5xl:  3rem;      /* 48 */
+
+    /* ---------- Motion ---------- */
+    --ease:          cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out:      cubic-bezier(0, 0, 0.2, 1);
+    --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+    --dur-fast:      120ms;
+    --dur:           200ms;
+    --dur-slow:      360ms;
+
+    /* ---------- Layout ---------- */
+    --container:     1280px;
+    --header-h:      118px;
+    --admin-header-h: 64px;
+    --sidebar-w:     260px;
+    --sidebar-w-mini: 72px;
+
+    /* Bootstrap overrides so existing `btn-primary`, `text-primary`, etc. theo palette mới */
+    --bs-primary:        var(--brand-600);
+    --bs-primary-rgb:    215, 0, 24;
+    --bs-body-font-family: var(--font-sans);
+    --bs-body-color:     var(--text);
+    --bs-body-bg:        var(--bg);
+    --bs-border-color:   var(--border);
+    --bs-link-color:     var(--brand-600);
+    --bs-link-hover-color: var(--brand-700);
+    --bs-secondary:      var(--accent-500);
+    --bs-secondary-rgb:  245, 158, 11;
+}
+
+/* ---------- Base reset refinement ---------- */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6,
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--brand-600);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+}
+
+a:hover {
+    color: var(--brand-700);
+}
+
+/* Better focus states (accessibility) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-ring);
+    border-radius: var(--radius-sm);
+}
+
+/* ---------- Utility classes used across the app ---------- */
+.ui-container { max-width: var(--container); margin-inline: auto; padding-inline: var(--space-4); }
+.ui-stack     { display: flex; flex-direction: column; gap: var(--space-4); }
+.ui-row       { display: flex; align-items: center; gap: var(--space-3); }
+.ui-muted     { color: var(--text-muted); }
+.ui-subtle    { color: var(--text-subtle); }
+.ui-section   { padding-block: var(--space-12); }
+
+.ui-gradient-brand { background: linear-gradient(135deg, var(--brand-600) 0%, var(--brand-400) 100%); }
+.ui-gradient-soft  { background: linear-gradient(135deg, #eef4ff 0%, #ffffff 60%, #fef7e7 100%); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }

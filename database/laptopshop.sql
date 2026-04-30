@@ -1,6 +1,10 @@
 -- Laptopshop database bootstrap script
 -- Usage:
 --   mysql -u root -p < database/laptopshop.sql
+--
+-- Demo accounts after import:
+--   Admin:    admin@laptopshop.dev / Admin@123
+--   Customer: customer@laptopshop.dev / Customer@123
 
 CREATE DATABASE IF NOT EXISTS laptopshop
   CHARACTER SET utf8mb4
@@ -85,6 +89,7 @@ CREATE TABLE IF NOT EXISTS orders (
   receiver_address VARCHAR(255),
   receiver_phone VARCHAR(255),
   status VARCHAR(255),
+  payment_method VARCHAR(255),
   user_id BIGINT,
   PRIMARY KEY (id),
   KEY idx_orders_user_id (user_id),
@@ -118,11 +123,49 @@ VALUES
   ('USER', 'End user')
 ON DUPLICATE KEY UPDATE description = VALUES(description);
 
+INSERT INTO users (email, password, full_name, address, phone, avatar, role_id)
+SELECT
+  'admin@laptopshop.dev',
+  '$2a$10$XsveonQUbDNHpJD1ScHsdOAU.Hwo6RwMqnXs6qWupAEHsrYB442n6',
+  'Admin Demo',
+  'Laptopshop HQ, Ha Noi',
+  '0988888888',
+  'default.png',
+  r.id
+FROM roles r
+WHERE r.name = 'ADMIN'
+ON DUPLICATE KEY UPDATE
+  password = VALUES(password),
+  full_name = VALUES(full_name),
+  address = VALUES(address),
+  phone = VALUES(phone),
+  avatar = VALUES(avatar),
+  role_id = VALUES(role_id);
+
+INSERT INTO users (email, password, full_name, address, phone, avatar, role_id)
+SELECT
+  'customer@laptopshop.dev',
+  '$2a$10$D6oOiazqrmaD1WUbw0zqpOKdiSCrQEyCnyrvWnz97SxtsMWat1HT.',
+  'Customer Demo',
+  '123 Demo Street, Ha Noi',
+  '0900000000',
+  'default.png',
+  r.id
+FROM roles r
+WHERE r.name = 'USER'
+ON DUPLICATE KEY UPDATE
+  password = VALUES(password),
+  full_name = VALUES(full_name),
+  address = VALUES(address),
+  phone = VALUES(phone),
+  avatar = VALUES(avatar),
+  role_id = VALUES(role_id);
+
 INSERT INTO products (name, price, image, detail_desc, short_desc, quantity, sold, factory, target)
 VALUES
-  ('Dell Inspiron 15', 14990000, '1711078452562-dell-01.png', 'Core i5, 16GB RAM, 512GB SSD.', 'Laptop office and study', 10, 0, 'DELL', 'SINHVIEN-OFFICE'),
+  ('Dell Inspiron 15', 14990000, '1711078452562-dell-01.png', 'Core i5, 16GB RAM, 512GB SSD.', 'Laptop office and study', 10, 0, 'DELL', 'SINHVIEN-VANPHONG'),
   ('ASUS TUF Gaming', 22990000, '1711078092373-asus-01.png', 'Ryzen 7, 16GB RAM, RTX 4050.', 'Gaming laptop', 8, 0, 'ASUS', 'GAMING'),
-  ('MacBook Air M2', 26990000, '1711079954090-apple-01.png', 'Apple M2, 16GB RAM, 512GB SSD.', 'Thin and light laptop', 6, 0, 'APPLE', 'MOBILE-CREATIVE')
+  ('MacBook Air M2', 26990000, '1711079954090-apple-01.png', 'Apple M2, 16GB RAM, 512GB SSD.', 'Thin and light laptop', 6, 0, 'APPLE', 'MONG-NHE')
 ON DUPLICATE KEY UPDATE
   price = VALUES(price),
   quantity = VALUES(quantity),

@@ -1,16 +1,17 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriUtils;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.User;
@@ -37,47 +40,40 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @RequestMapping("/")
-    public String getHomePage(Model model) {
-        List<User> arrUsers = this.userService.getAllUsersByEmail("1@gmail.com");
-        System.out.println(arrUsers);
-        model.addAttribute("eric", "test");
-        model.addAttribute("hoidanit", "hello from Controller");
-        return "hello";
-    }
-
     @GetMapping("/admin/user")
     public String getUserPage(
             Model model,
-            @RequestParam("page") Optional<String> pageOptional
+            @RequestParam("page") Optional<String> pageOptional,
+            @RequestParam("q") Optional<String> queryOptional,
+            @RequestParam("role") Optional<String> roleOptional
     ) {
         int page = 1;
         try {
             if (pageOptional.isPresent()) {
-                // convert from String to int
-                page = Integer.parseInt(pageOptional.get());
-            } else {
-                // page = 1
+                page = Math.max(1, Integer.parseInt(pageOptional.get()));
             }
-        } catch (Exception e) {
-            // page = 1
-            // TODO: handle exception
+        } catch (NumberFormatException ignored) {
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 1);
-        Page<User> usersPage = this.userService.getAllUsers(pageable);
+        String query = normalizeParam(queryOptional);
+        String role = normalizeParam(roleOptional);
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        Page<User> usersPage = this.userService.searchAdminUsers(pageable, query, role);
         List<User> users = usersPage.getContent();
 
         model.addAttribute("users1", users);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", usersPage.getTotalPages());
+        model.addAttribute("query", query);
+        model.addAttribute("roleFilter", role);
+        model.addAttribute("filterQuery", buildFilterQuery(query, role));
 
         return "admin/user/show";
     }
 
     @RequestMapping("/admin/user/{id}")
     public String getUserDetailPage(Model model, @PathVariable long id) {
-        User user = this.userService.getUserById(id);
+        User user = getUserOr404(id);
         model.addAttribute("user", user);
         model.addAttribute("id", id);
         return "admin/user/detail";
@@ -96,13 +92,6 @@ public class UserController {
             @RequestParam("hoidanitFile") MultipartFile[] files
     ) {
 
-        //validation
-        List<FieldError> errors = newUserBindingResult.getFieldErrors();
-        for (FieldError error : errors) {
-            System.out.println(">>>>" + error.getField() + " - " + error.getDefaultMessage()
-            );
-        }
-
         if (newUserBindingResult.hasErrors()) {
             return "admin/user/create";
         }
@@ -120,7 +109,7 @@ public class UserController {
     @RequestMapping("/admin/user/update/{id}") // GET
     public String getUpdateUserPage(Model model, @PathVariable long id
     ) {
-        User currentUser = this.userService.getUserById(id);
+        User currentUser = getUserOr404(id);
         model.addAttribute("newUser", currentUser);
         return "admin/user/update";
     }
@@ -128,19 +117,18 @@ public class UserController {
     @PostMapping("/admin/user/update")
     public String getUpdateUserPage(Model model, @ModelAttribute("newUser") User hoidanit
     ) {
-        User currentUser = this.userService.getUserById(hoidanit.getId());
-        if (currentUser != null) {
-            currentUser.setAddress(hoidanit.getAddress());
-            currentUser.setFullName(hoidanit.getFullName());
-            currentUser.setPhone(hoidanit.getPhone());
-            this.userService.handleSaveUser(currentUser);
-        }
+        User currentUser = getUserOr404(hoidanit.getId());
+        currentUser.setAddress(hoidanit.getAddress());
+        currentUser.setFullName(hoidanit.getFullName());
+        currentUser.setPhone(hoidanit.getPhone());
+        this.userService.handleSaveUser(currentUser);
         return "redirect:/admin/user";
     }
 
     @GetMapping("/admin/user/delete/{id}")
     public String getDeleteUserPage(Model model, @PathVariable long id
     ) {
+        getUserOr404(id);
         model.addAttribute("id", id);
         model.addAttribute("newUser", new User());
         return "admin/user/delete";
@@ -151,6 +139,29 @@ public class UserController {
     ) {
         this.userService.deleteUser(eric.getId());
         return "redirect:/admin/user";
+    }
+
+    private User getUserOr404(long id) {
+        User user = this.userService.getUserById(id);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        return user;
+    }
+
+    private String normalizeParam(Optional<String> value) {
+        return value.map(String::trim).filter(v -> !v.isBlank()).orElse(null);
+    }
+
+    private String buildFilterQuery(String query, String role) {
+        StringBuilder builder = new StringBuilder();
+        if (query != null) {
+            builder.append("&q=").append(UriUtils.encodeQueryParam(query, StandardCharsets.UTF_8));
+        }
+        if (role != null) {
+            builder.append("&role=").append(UriUtils.encodeQueryParam(role, StandardCharsets.UTF_8));
+        }
+        return builder.toString();
     }
 
 }

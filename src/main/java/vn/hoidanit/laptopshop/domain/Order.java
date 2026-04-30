@@ -26,6 +26,7 @@ public class Order implements Serializable {
     private String receiverAddress;
     private String receiverPhone;
     private String status;
+    private String paymentMethod;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -86,6 +87,14 @@ public class Order implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public List<OrderDetail> getOrderDetails() {
