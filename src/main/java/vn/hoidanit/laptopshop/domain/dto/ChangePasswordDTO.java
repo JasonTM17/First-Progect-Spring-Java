@@ -2,6 +2,7 @@ package vn.hoidanit.laptopshop.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import vn.hoidanit.laptopshop.service.validator.StrongPassword;
 
 public class ChangePasswordDTO {
 
@@ -10,6 +11,7 @@ public class ChangePasswordDTO {
 
     @NotBlank(message = "Mật khẩu mới không được để trống")
     @Size(min = 6, message = "Mật khẩu mới phải có tối thiểu 6 ký tự")
+    @StrongPassword
     private String newPassword;
 
     @NotBlank(message = "Xác nhận mật khẩu không được để trống")

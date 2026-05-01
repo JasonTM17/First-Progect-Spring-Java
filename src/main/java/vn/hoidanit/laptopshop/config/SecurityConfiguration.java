@@ -15,6 +15,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 import jakarta.servlet.DispatcherType;
@@ -38,7 +39,7 @@ public class SecurityConfiguration {
     public SpringSessionRememberMeServices rememberMeServices() {
         SpringSessionRememberMeServices rememberMeServices
                 = new SpringSessionRememberMeServices();
-        rememberMeServices.setAlwaysRemember(true);
+        rememberMeServices.setAlwaysRemember(false);
         return rememberMeServices;
     }
 
@@ -72,7 +73,7 @@ public class SecurityConfiguration {
         AuthenticationEntryPoint loginAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
-        authProvider.setHideUserNotFoundExceptions(false);
+        authProvider.setHideUserNotFoundExceptions(true);
 
         http
                 .authenticationProvider(authProvider)
@@ -82,21 +83,29 @@ public class SecurityConfiguration {
                         "/favicon.ico", "/site.webmanifest", "/robots.txt", "/sitemap.xml",
                         "/client/**", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/api/products/suggest").permitAll()
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/account/**", "/order-history", "/cart", "/checkout", "/confirm-checkout",
                         "/place-order", "/thanks", "/add-product-to-cart/**", "/delete-cart-product/**",
                         "/add-product-from-view-detail", "/api/**").authenticated()
-                .anyRequest().permitAll())
+                .anyRequest().denyAll())
+                .headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp.policyDirectives(
+                "default-src 'self'; "
+                + "base-uri 'self'; "
+                + "object-src 'none'; "
+                + "frame-ancestors 'self'; "
+                + "form-action 'self'; "
+                + "img-src 'self' data:; "
+                + "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; "
+                + "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; "
+                + "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://ajax.googleapis.com https://code.jquery.com; "
+                + "connect-src 'self'"))
+                .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN))
+                .permissionsPolicyHeader(policy -> policy.policy("camera=(), microphone=(), geolocation=(), payment=()")))
                 //Session
                 .sessionManagement((sessionManagement) -> sessionManagement
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .invalidSessionStrategy((request, response) -> {
-                    if (isApiRequest(request)) {
-                        apiAuthenticationEntryPoint.commence(request, response, null);
-                        return;
-                    }
-                    response.sendRedirect(request.getContextPath() + "/logout?expired");
-                })
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(false))
                 .logout(logout -> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
