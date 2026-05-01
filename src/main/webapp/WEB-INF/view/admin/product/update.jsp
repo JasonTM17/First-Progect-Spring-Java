@@ -39,6 +39,7 @@
             <c:set var="errorDetailDesc"><form:errors path="detailDesc" cssClass="invalid-feedback" /></c:set>
             <c:set var="errorShortDesc"><form:errors path="shortDesc" cssClass="invalid-feedback" /></c:set>
             <c:set var="errorQuantity"><form:errors path="quantity" cssClass="invalid-feedback" /></c:set>
+            <c:set var="errorImage"><form:errors path="image" cssClass="invalid-feedback d-block" /></c:set>
 
             <div class="la-form-layout">
                 <div>
@@ -112,13 +113,13 @@
 
                     <section class="la-form-section">
                         <h3 class="la-form-section__title">Ảnh sản phẩm</h3>
-                        <p class="la-form-section__desc">Kéo thả ảnh mới để thay thế</p>
+                        <p class="la-form-section__desc">Kéo thả ảnh mới để thay thế. PNG, JPG, WEBP hoặc GIF tối đa 5MB.</p>
                         <div class="la-uploader ${not empty newProduct.image ? 'has-file' : ''}">
-                            <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg" name="hoidanitFile" />
+                            <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg,.webp,.gif" name="hoidanitFile" />
                             <div class="la-uploader__placeholder">
                                 <div class="la-uploader__icon"><i class="bi bi-image"></i></div>
                                 <p class="la-uploader__title">Kéo & thả ảnh hoặc nhấp để chọn</p>
-                                <p class="la-uploader__desc">PNG / JPG / JPEG</p>
+                                <p class="la-uploader__desc">PNG / JPG / JPEG / WEBP / GIF</p>
                             </div>
                             <c:if test="${not empty newProduct.image}">
                                 <img class="la-uploader__preview" id="avatarPreview" alt="" src="/images/product/${newProduct.image}" />
@@ -126,6 +127,7 @@
                             <c:if test="${empty newProduct.image}">
                                 <img class="la-uploader__preview" id="avatarPreview" alt="" /></c:if>
                         </div>
+                        ${errorImage}
                     </section>
                 </div>
             </div>

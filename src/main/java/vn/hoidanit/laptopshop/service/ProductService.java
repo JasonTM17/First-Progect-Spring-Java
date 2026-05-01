@@ -221,9 +221,15 @@ public class ProductService {
 
     @Transactional
     public void handleRemoveCartDetail(long cartDetailId, HttpSession session) {
+        handleRemoveCartDetail(cartDetailId, 0, session);
+    }
+
+    @Transactional
+    public void handleRemoveCartDetail(long cartDetailId, long userId, HttpSession session) {
         Optional<CartDetail> cartDetailOptional = this.cartDetailRepository.findById(cartDetailId);
         if (cartDetailOptional.isPresent()) {
             CartDetail cartDetail = cartDetailOptional.get();
+            ensureCartDetailBelongsToUser(cartDetail, userId);
             Cart currentCart = cartDetail.getCart();
             // delete cart-detail
             this.cartDetailRepository.deleteById(cartDetailId);
@@ -245,6 +251,11 @@ public class ProductService {
 
     @Transactional
     public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails) {
+        handleUpdateCartBeforeCheckout(cartDetails, 0);
+    }
+
+    @Transactional
+    public void handleUpdateCartBeforeCheckout(List<CartDetail> cartDetails, long userId) {
         if (cartDetails == null) {
             return;
         }
@@ -252,6 +263,7 @@ public class ProductService {
             Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
             if (cdOptional.isPresent()) {
                 CartDetail currentCartDetail = cdOptional.get();
+                ensureCartDetailBelongsToUser(currentCartDetail, userId);
                 if (cartDetail.getQuantity() < 1) {
                     throw new IllegalArgumentException("Số lượng phải lớn hơn hoặc bằng 1");
                 }
@@ -262,6 +274,17 @@ public class ProductService {
                 currentCartDetail.setQuantity(cartDetail.getQuantity());
                 this.cartDetailRepository.save(currentCartDetail);
             }
+        }
+    }
+
+    private void ensureCartDetailBelongsToUser(CartDetail cartDetail, long userId) {
+        if (userId <= 0) {
+            return;
+        }
+        Cart cart = cartDetail == null ? null : cartDetail.getCart();
+        User owner = cart == null ? null : cart.getUser();
+        if (owner == null || owner.getId() != userId) {
+            throw new IllegalArgumentException("Không tìm thấy sản phẩm trong giỏ hàng của bạn");
         }
     }
 

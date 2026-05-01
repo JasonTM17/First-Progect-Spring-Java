@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -35,11 +36,11 @@
                             <span class="ui-badge ui-badge--danger">Giảm 8%</span>
                             <span class="ui-badge ui-badge--warning">Trả góp 0%</span>
                         </div>
-                        <img src="/images/product/${product.image}" alt="${product.name}" class="ls-pd__main-img" id="pdMainImg" />
+                        <img src="/images/product/${fn:escapeXml(product.image)}" alt="${fn:escapeXml(product.name)}" class="ls-pd__main-img" id="pdMainImg" />
                         <div class="ls-pd__thumbs">
-                            <img src="/images/product/${product.image}" alt="" class="ls-pd__thumb is-active" />
-                            <img src="/images/product/${product.image}" alt="" class="ls-pd__thumb" />
-                            <img src="/images/product/${product.image}" alt="" class="ls-pd__thumb" />
+                            <img src="/images/product/${fn:escapeXml(product.image)}" alt="" class="ls-pd__thumb is-active" />
+                            <img src="/images/product/${fn:escapeXml(product.image)}" alt="" class="ls-pd__thumb" />
+                            <img src="/images/product/${fn:escapeXml(product.image)}" alt="" class="ls-pd__thumb" />
                         </div>
                         <div class="ls-pd__commitments">
                             <div><i class="bi bi-patch-check-fill"></i>Hàng chính hãng</div>
@@ -50,7 +51,7 @@
 
                     <div class="ls-pd__info">
                         <div class="ls-pd__heading">
-                            <span class="ls-pd__brand">${product.factory}</span>
+                            <span class="ls-pd__brand"><c:out value="${product.factory}" /></span>
                             <h1 class="ls-pd__title"><c:out value="${product.name}" /></h1>
                             <div class="ls-pd__rating">
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
@@ -58,7 +59,14 @@
                                 <i class="bi bi-star-half"></i>
                                 <span>4.8 · Đã bán ${product.sold}</span>
                                 <span>|</span>
-                                <span class="ls-stock"><i class="bi bi-check-circle-fill"></i> Còn hàng</span>
+                                <c:choose>
+                                    <c:when test="${product.quantity gt 0}">
+                                        <span class="ls-stock"><i class="bi bi-check-circle-fill"></i> Còn hàng</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="ls-stock ls-stock--out"><i class="bi bi-x-circle-fill"></i> Hết hàng</span>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
 
@@ -104,8 +112,8 @@
                     <aside class="ls-pd__buy-panel" aria-label="Mua sản phẩm">
                         <div class="ls-pd__delivery-box">
                             <h2>Chọn hình thức nhận hàng</h2>
-                            <label class="is-active"><input type="radio" checked /> Giao tận nơi <span>Miễn phí nội thành</span></label>
-                            <label><input type="radio" /> Nhận tại cửa hàng <span>Giữ máy trong 24h</span></label>
+                            <label class="is-active"><input type="radio" name="deliveryMethod" checked /> Giao tận nơi <span>Miễn phí nội thành</span></label>
+                            <label><input type="radio" name="deliveryMethod" /> Nhận tại cửa hàng <span>Giữ máy trong 24h</span></label>
                         </div>
 
                         <div class="ls-buy-box">
@@ -116,11 +124,11 @@
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <input type="hidden" value="${product.id}" name="id" />
-                            <button type="button" data-product-id="${product.id}" class="btnBuyNowDetail ui-btn ui-btn--danger ui-btn--lg">
+                            <button type="button" data-product-id="${product.id}" class="btnBuyNowDetail ui-btn ui-btn--danger ui-btn--lg" ${product.quantity le 0 ? 'disabled' : ''}>
                                 <i class="bi bi-lightning-charge-fill"></i>
                                 Mua ngay
                             </button>
-                            <button type="button" data-product-id="${product.id}" class="btnAddToCartDetail ui-btn ui-btn--outline ui-btn--lg">
+                            <button type="button" data-product-id="${product.id}" class="btnAddToCartDetail ui-btn ui-btn--outline ui-btn--lg" ${product.quantity le 0 ? 'disabled' : ''}>
                                 <i class="bi bi-bag-plus"></i>
                                 Thêm vào giỏ
                             </button>
@@ -144,7 +152,7 @@
                     <div class="ui-card" data-tab-panel="desc">
                         <div class="ls-rich-text">
                             <c:choose>
-                                <c:when test="${not empty product.detailDesc}">${product.detailDesc}</c:when>
+                                <c:when test="${not empty product.detailDesc}"><c:out value="${product.detailDesc}" /></c:when>
                                 <c:otherwise><em>Chưa có mô tả chi tiết cho sản phẩm này.</em></c:otherwise>
                             </c:choose>
                         </div>
@@ -152,8 +160,8 @@
                     <div class="ui-card" data-tab-panel="specs" hidden>
                         <table class="ui-table">
                             <tbody>
-                                <tr><td><strong>Hãng sản xuất</strong></td><td>${product.factory}</td></tr>
-                                <tr><td><strong>Mục đích</strong></td><td>${product.target}</td></tr>
+                                <tr><td><strong>Hãng sản xuất</strong></td><td><c:out value="${product.factory}" /></td></tr>
+                                <tr><td><strong>Mục đích</strong></td><td><c:out value="${product.target}" /></td></tr>
                                 <tr><td><strong>CPU</strong></td><td>Intel Core i7 / AMD Ryzen 7</td></tr>
                                 <tr><td><strong>RAM</strong></td><td>16 GB DDR5</td></tr>
                                 <tr><td><strong>Ổ cứng</strong></td><td>512 GB NVMe SSD</td></tr>
@@ -185,7 +193,7 @@
                                 <span>Gợi ý thêm</span>
                                 <h2 id="related-products-title">Sản phẩm tương tự</h2>
                             </div>
-                            <a href="/products?factory=${product.factory}">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                            <a href="/products?factory=${fn:escapeXml(product.factory)}">Xem tất cả <i class="bi bi-arrow-right"></i></a>
                         </div>
                         <div class="ls-prod-grid">
                             <c:forEach var="p" items="${relatedProducts}">
@@ -203,20 +211,7 @@
     <jsp:include page="/WEB-INF/view/fragments/scripts-client.jsp" />
     <script src="/client/js/main.js"></script>
     <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Product",
-            "name": "<c:out value="${product.name}" />",
-            "brand": "<c:out value="${product.factory}" />",
-            "image": "/images/product/${product.image}",
-            "description": "<c:out value="${product.shortDesc}" />",
-            "offers": {
-                "@type": "Offer",
-                "priceCurrency": "VND",
-                "price": "${product.price}",
-                "availability": "https://schema.org/InStock"
-            }
-        }
+        ${productJsonLd}
     </script>
 
     <script>

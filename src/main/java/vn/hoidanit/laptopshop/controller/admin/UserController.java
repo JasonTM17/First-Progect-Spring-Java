@@ -96,7 +96,13 @@ public class UserController {
             return "admin/user/create";
         }
         //
-        String avatar = this.uploadService.handleSaveUploadFile(files, "avatar");
+        String avatar;
+        try {
+            avatar = this.uploadService.handleSaveUploadFile(files, "avatar");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            newUserBindingResult.rejectValue("avatar", "upload.invalid", ex.getMessage());
+            return "admin/user/create";
+        }
         String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
         hoidanit.setAvatar(avatar);
         hoidanit.setPassword(hashPassword);

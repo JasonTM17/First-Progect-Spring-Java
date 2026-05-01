@@ -20,6 +20,7 @@ $env:MYSQL_DATABASE = "laptopshop"
 $env:MYSQL_USER = "root"
 $env:MYSQL_PASSWORD = "your_mysql_password"
 $env:APP_DEMO_SEED = "true"
+$env:APP_BASE_URL = "http://localhost:8081"
 ```
 
 `local` mode will auto-create:

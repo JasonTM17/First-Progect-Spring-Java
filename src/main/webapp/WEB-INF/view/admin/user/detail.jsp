@@ -39,14 +39,14 @@
                     <div style="width: 72px; height: 72px; border-radius: 999px; background: var(--brand-100); color: var(--brand-700); display:flex; align-items:center; justify-content:center; font-weight: 700; font-size: 1.5rem;">
                         <c:choose>
                             <c:when test="${not empty user.avatar}">
-                                <img src="/images/avatar/${user.avatar}" alt="" style="width:100%; height:100%; border-radius: 999px; object-fit: cover;" />
+                                <img src="/images/avatar/${fn:escapeXml(user.avatar)}" alt="" style="width:100%; height:100%; border-radius: 999px; object-fit: cover;" />
                             </c:when>
                             <c:otherwise>${fn:toUpperCase(fn:substring(user.fullName, 0, 1))}</c:otherwise>
                         </c:choose>
                     </div>
                     <div>
                         <h2 style="margin: 0; font-size: 1.25rem;"><c:out value="${user.fullName}" /></h2>
-                        <p class="ui-muted" style="margin: 0;">${user.email}</p>
+                        <p class="ui-muted" style="margin: 0;"><c:out value="${user.email}" /></p>
                     </div>
                 </div>
                 <dl style="display: grid; grid-template-columns: 160px 1fr; gap: var(--space-3) var(--space-5); margin: 0;">
@@ -58,7 +58,7 @@
                             <c:otherwise><span class="ui-badge ui-badge--muted">USER</span></c:otherwise>
                         </c:choose>
                     </dd>
-                    <dt class="ui-muted">Email</dt><dd style="margin:0;">${user.email}</dd>
+                    <dt class="ui-muted">Email</dt><dd style="margin:0;"><c:out value="${user.email}" /></dd>
                     <dt class="ui-muted">Số điện thoại</dt><dd style="margin:0;"><c:out value="${user.phone}" default="—" /></dd>
                     <dt class="ui-muted">Địa chỉ</dt><dd style="margin:0;"><c:out value="${user.address}" default="—" /></dd>
                 </dl>

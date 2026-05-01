@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -38,7 +39,7 @@
                 <div style="display:flex; gap: var(--space-5); flex-wrap: wrap;">
                     <div style="flex: 0 0 240px;">
                         <div style="background: var(--bg-muted); border-radius: var(--radius); overflow: hidden; padding: var(--space-3); display:flex; align-items:center; justify-content:center;">
-                            <img src="/images/product/${product.image}" alt="${product.name}" style="max-width: 100%; max-height: 260px; object-fit: contain;" />
+                            <img src="/images/product/${fn:escapeXml(product.image)}" alt="${fn:escapeXml(product.name)}" style="max-width: 100%; max-height: 260px; object-fit: contain;" />
                         </div>
                     </div>
                     <div style="flex: 1; min-width: 260px;">
@@ -48,8 +49,8 @@
                         </div>
                         <dl style="display: grid; grid-template-columns: 140px 1fr; gap: var(--space-3) var(--space-4); margin: 0;">
                             <dt class="ui-muted">ID</dt><dd style="margin:0; font-weight:600;">#${product.id}</dd>
-                            <dt class="ui-muted">Hãng</dt><dd style="margin:0;"><span class="ui-badge ui-badge--muted">${product.factory}</span></dd>
-                            <dt class="ui-muted">Mục đích</dt><dd style="margin:0;">${product.target}</dd>
+                            <dt class="ui-muted">Hãng</dt><dd style="margin:0;"><span class="ui-badge ui-badge--muted"><c:out value="${product.factory}" /></span></dd>
+                            <dt class="ui-muted">Mục đích</dt><dd style="margin:0;"><c:out value="${product.target}" /></dd>
                             <dt class="ui-muted">Số lượng</dt><dd style="margin:0;">${product.quantity}</dd>
                             <dt class="ui-muted">Mô tả ngắn</dt><dd style="margin:0;"><c:out value="${product.shortDesc}" default="—" /></dd>
                         </dl>

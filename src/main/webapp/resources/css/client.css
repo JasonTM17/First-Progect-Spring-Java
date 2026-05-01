@@ -1636,6 +1636,10 @@ body.ls-client {
     color: var(--success-600);
 }
 
+.ls-stock--out {
+    color: var(--danger-600);
+}
+
 .ls-pd__title {
     font-size: clamp(1.35rem, 2vw, 2rem);
     letter-spacing: 0;
@@ -2913,6 +2917,10 @@ body.ls-category-open .ls-category-drawer {
     font-size: .72rem;
     font-weight: 800;
     white-space: nowrap;
+}
+
+.ui-pcard__stock--out {
+    color: var(--danger-600);
 }
 
 .ui-pcard__specs {

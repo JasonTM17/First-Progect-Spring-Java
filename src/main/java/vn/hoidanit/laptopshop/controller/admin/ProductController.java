@@ -103,7 +103,7 @@ public class ProductController {
         String image;
         try {
             image = this.uploadService.handleSaveUploadFile(files, "product");
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | IllegalStateException ex) {
             newProductBindingResult.rejectValue("image", "upload.invalid", ex.getMessage());
             return "admin/product/create";
         }
@@ -151,7 +151,7 @@ public class ProductController {
                 String img;
                 try {
                     img = this.uploadService.handleSaveUploadFile(files, "product");
-                } catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException | IllegalStateException ex) {
                     newProductBindingResult.rejectValue("image", "upload.invalid", ex.getMessage());
                     return "admin/product/update";
                 }

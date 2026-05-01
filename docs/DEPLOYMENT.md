@@ -25,6 +25,7 @@ Set these variables in the hosting platform. Do not commit real values.
 | `JPA_DDL_AUTO` | Recommended | `validate` |
 | `SPRING_SESSION_JDBC_INITIALIZE_SCHEMA` | Recommended | `never` |
 | `MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE` | Optional | `health,info` |
+| `APP_BASE_URL` | Recommended | live public base URL for sitemap/robots |
 | `JAVA_OPTS` | Optional | `-Xms256m -Xmx512m` |
 
 Use an external MySQL-compatible database for production. The local demo seed only runs under the `local` profile.
@@ -46,6 +47,7 @@ docker run --rm -p 8080:8080 `
   -e SPRING_DATASOURCE_PASSWORD="replace_me" `
   -e JPA_DDL_AUTO=validate `
   -e SPRING_SESSION_JDBC_INITIALIZE_SCHEMA=never `
+  -e APP_BASE_URL="https://your-live-demo.example" `
   laptopshop:release
 ```
 

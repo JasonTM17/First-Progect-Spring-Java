@@ -133,6 +133,7 @@ $env:MYSQL_DATABASE = "laptopshop"
 $env:MYSQL_USER = "root"
 $env:MYSQL_PASSWORD = "your_mysql_password"
 $env:APP_DEMO_SEED = "true"
+$env:APP_BASE_URL = "http://localhost:8080"
 ```
 
 For production, set:
@@ -145,6 +146,7 @@ SPRING_DATASOURCE_PASSWORD=...
 JPA_DDL_AUTO=validate
 SPRING_SESSION_JDBC_INITIALIZE_SCHEMA=never
 PORT=8080
+APP_BASE_URL=https://your-live-demo.example
 ```
 
 ## Run Locally
@@ -152,7 +154,7 @@ PORT=8080
 Requirements:
 
 - JDK 17+
-- MySQL 5.7+ or 8+
+- MySQL 8+
 - Maven Wrapper from this repo
 
 Option A: start with an empty `laptopshop` database and let the local profile seed the demo data automatically.

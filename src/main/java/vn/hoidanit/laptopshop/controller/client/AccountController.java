@@ -29,8 +29,7 @@ public class AccountController {
 
     @GetMapping("/account")
     public String getAccountPage(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        String email = session == null ? null : (String) session.getAttribute("email");
+        String email = resolveEmail(request);
         User user = email == null ? null : userService.getUserByEmail(email);
 
         model.addAttribute("email", email);
@@ -58,7 +57,7 @@ public class AccountController {
         }
 
         HttpSession session = request.getSession(false);
-        String email = session == null ? null : (String) session.getAttribute("email");
+        String email = resolveEmail(request);
         User updatedUser = userService.updateProfile(email, profileDTO);
         if (updatedUser == null) {
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy tài khoản để cập nhật");
@@ -92,8 +91,7 @@ public class AccountController {
             return "redirect:/account#tab-password";
         }
 
-        HttpSession session = request.getSession(false);
-        String email = session == null ? null : (String) session.getAttribute("email");
+        String email = resolveEmail(request);
 
         boolean success = userService.changePassword(
                 email,
@@ -108,6 +106,15 @@ public class AccountController {
 
         redirectAttributes.addFlashAttribute("success", "Đổi mật khẩu thành công");
         return "redirect:/account#tab-password";
+    }
+
+    private String resolveEmail(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String email = session == null ? null : (String) session.getAttribute("email");
+        if (email == null && request.getUserPrincipal() != null) {
+            email = request.getUserPrincipal().getName();
+        }
+        return email;
     }
 
     private ProfileDTO buildProfileDTO(User user) {

@@ -87,7 +87,7 @@
                                         <td style="font-weight: 600; color: var(--text-muted);">#${product.id}</td>
                                         <td>
                                             <div style="width: 52px; height: 52px; border-radius: var(--radius); background: var(--slate-50); padding: 4px; border: 1px solid var(--border);">
-                                                <img src="/images/product/${product.image}" alt="" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';" />
+                                                <img src="/images/product/${fn:escapeXml(product.image)}" alt="" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';" />
                                             </div>
                                         </td>
                                         <td>
@@ -108,7 +108,7 @@
                                                 </a>
                                                 <form method="post" action="/admin/product/delete" style="display:inline;"
                                                       data-confirm-title="Xoá sản phẩm"
-                                                      data-confirm="Bạn chắc chắn muốn xoá sản phẩm ${product.name}? Hành động này không thể hoàn tác.">
+                                                      data-confirm="Bạn chắc chắn muốn xoá sản phẩm ${fn:escapeXml(product.name)}? Hành động này không thể hoàn tác.">
                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                                     <input type="hidden" name="id" value="${product.id}" />
                                                     <button type="submit" class="ui-iconbtn" style="color: var(--danger-600); background: #fee2e2;" title="Xoá">

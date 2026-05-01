@@ -163,9 +163,23 @@ class LaptopshopE2eTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Disallow: /admin/")));
 
+        mockMvc.perform(get("/robots.txt").header("Host", "review.test"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Sitemap: http://review.test/sitemap.xml")));
+
         mockMvc.perform(get("/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("client/auth/register"));
+
+        mockMvc.perform(post("/register")
+                .with(csrf())
+                .param("firstName", "New")
+                .param("lastName", "Reviewer")
+                .param("email", "new.reviewer@example.test")
+                .param("password", "Password123!")
+                .param("confirmPassword", "Password123!"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?registerSuccess"));
 
         mockMvc.perform(get("/api/products/suggest").param("name", "Mac"))
                 .andExpect(status().isOk())

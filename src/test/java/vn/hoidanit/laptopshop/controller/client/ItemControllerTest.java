@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +23,7 @@ class ItemControllerTest {
     @Test
     void productsPaginationPreservesExistingFiltersWithAmpersand() {
         ProductService productService = org.mockito.Mockito.mock(ProductService.class);
-        ItemController controller = new ItemController(productService, null);
+        ItemController controller = new ItemController(productService, null, new ObjectMapper());
 
         ProductCriteriaDTO criteria = new ProductCriteriaDTO();
         criteria.setPage(Optional.of("1"));

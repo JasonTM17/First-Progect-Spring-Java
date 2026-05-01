@@ -3,6 +3,7 @@ package vn.hoidanit.laptopshop.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -166,5 +167,50 @@ class ProductServiceTest {
         assertThat(orderCaptor.getValue().getTotalPrice()).isEqualTo(2000);
         assertThat(product.getQuantity()).isEqualTo(3);
         assertThat(product.getSold()).isEqualTo(3);
+    }
+
+    @Test
+    void removeCartDetailRejectsDifferentCartOwner() {
+        User owner = new User();
+        owner.setId(2);
+
+        Cart cart = new Cart();
+        cart.setUser(owner);
+        cart.setSum(1);
+
+        CartDetail detail = new CartDetail();
+        detail.setId(50);
+        detail.setCart(cart);
+
+        when(cartDetailRepository.findById(50L)).thenReturn(Optional.of(detail));
+
+        assertThatThrownBy(() -> productService.handleRemoveCartDetail(50, 1, mock(HttpSession.class)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("giỏ hàng");
+        verify(cartDetailRepository, never()).deleteById(50L);
+    }
+
+    @Test
+    void updateCartBeforeCheckoutRejectsDifferentCartOwner() {
+        User owner = new User();
+        owner.setId(2);
+
+        Cart cart = new Cart();
+        cart.setUser(owner);
+
+        CartDetail existing = new CartDetail();
+        existing.setId(50);
+        existing.setCart(cart);
+
+        CartDetail posted = new CartDetail();
+        posted.setId(50);
+        posted.setQuantity(1);
+
+        when(cartDetailRepository.findById(50L)).thenReturn(Optional.of(existing));
+
+        assertThatThrownBy(() -> productService.handleUpdateCartBeforeCheckout(List.of(posted), 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("giỏ hàng");
+        verify(cartDetailRepository, never()).save(any(CartDetail.class));
     }
 }

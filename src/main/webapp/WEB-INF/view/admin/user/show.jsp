@@ -108,7 +108,7 @@
                                                 </a>
                                                 <form method="post" action="/admin/user/delete" style="display:inline;"
                                                       data-confirm-title="Xoá người dùng"
-                                                      data-confirm="Bạn chắc chắn muốn xoá người dùng ${user.email}? Hành động này không thể hoàn tác.">
+                                                      data-confirm="Bạn chắc chắn muốn xoá người dùng ${fn:escapeXml(user.email)}? Hành động này không thể hoàn tác.">
                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                                     <input type="hidden" name="id" value="${user.id}" />
                                                     <button type="submit" class="ui-iconbtn" style="color: var(--danger-600); background: #fee2e2;" title="Xoá">

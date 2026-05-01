@@ -1,6 +1,6 @@
 services:
   db-mysql:
-    image: mysql:5.7.40
+    image: public.ecr.aws/docker/library/mysql:8.0
     container_name: mysql-laptopshop
     restart: always
     environment:

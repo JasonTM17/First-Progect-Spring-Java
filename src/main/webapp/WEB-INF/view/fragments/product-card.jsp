@@ -5,13 +5,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="oldPrice" value="${product.price * 1.08}" />
 
 <article class="ui-pcard ui-pcard--retail">
     <div class="ui-pcard__media">
-        <a href="/product/${product.id}" aria-label="Xem chi tiết ${product.name}">
-            <img src="/images/product/${product.image}" alt="${product.name}" class="ui-pcard__img" loading="lazy" />
+        <a href="/product/${product.id}" aria-label="Xem chi tiết ${fn:escapeXml(product.name)}">
+            <img src="/images/product/${fn:escapeXml(product.image)}" alt="${fn:escapeXml(product.name)}" class="ui-pcard__img" loading="lazy" />
         </a>
         <div class="ui-pcard__badges">
             <span class="ui-pcard__badge">Giảm 8%</span>
@@ -22,16 +23,23 @@
                 aria-label="Lưu sản phẩm yêu thích"
                 data-wishlist-toggle
                 data-product-id="${product.id}"
-                data-product-name="${product.name}">
+                data-product-name="${fn:escapeXml(product.name)}">
             <i class="bi bi-heart"></i>
         </button>
     </div>
     <div class="ui-pcard__body">
         <div class="ui-pcard__meta">
             <c:if test="${not empty product.factory}">
-                <span class="ui-pcard__brand">${product.factory}</span>
+                <span class="ui-pcard__brand"><c:out value="${product.factory}" /></span>
             </c:if>
-            <span class="ui-pcard__stock"><i class="bi bi-check-circle-fill"></i> Còn hàng</span>
+            <c:choose>
+                <c:when test="${product.quantity gt 0}">
+                    <span class="ui-pcard__stock"><i class="bi bi-check-circle-fill"></i> Còn hàng</span>
+                </c:when>
+                <c:otherwise>
+                    <span class="ui-pcard__stock ui-pcard__stock--out"><i class="bi bi-x-circle-fill"></i> Hết hàng</span>
+                </c:otherwise>
+            </c:choose>
         </div>
         <h3 class="ui-pcard__name">
             <a href="/product/${product.id}"><c:out value="${product.name}" /></a>
@@ -57,7 +65,8 @@
             <button type="button"
                     data-product-id="${product.id}"
                     class="btnAddToCartHomepage ui-iconbtn ui-iconbtn--primary"
-                    aria-label="Thêm vào giỏ hàng">
+                    aria-label="Thêm vào giỏ hàng"
+                    ${product.quantity le 0 ? 'disabled' : ''}>
                 <i class="bi bi-bag-plus"></i>
             </button>
         </div>

@@ -1,9 +1,13 @@
 package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,10 +43,12 @@ public class ItemController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final ObjectMapper objectMapper;
 
-    public ItemController(ProductService productService, UserService userService) {
+    public ItemController(ProductService productService, UserService userService, ObjectMapper objectMapper) {
         this.productService = productService;
         this.userService = userService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/product/{id}")
@@ -59,6 +65,7 @@ public class ItemController {
         model.addAttribute("product", product);
         model.addAttribute("relatedProducts", relatedProducts);
         model.addAttribute("id", id);
+        model.addAttribute("productJsonLd", buildProductJsonLd(product));
         return "client/product/detail";
     }
 
@@ -87,8 +94,12 @@ public class ItemController {
     }
 
     @PostMapping("/delete-cart-product/{id}")
-    public String deleteCartDetail(@PathVariable long id, HttpServletRequest request) {
-        this.productService.handleRemoveCartDetail(id, request.getSession(false));
+    public String deleteCartDetail(@PathVariable long id, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        try {
+            this.productService.handleRemoveCartDetail(id, getCurrentUser(request).getId(), request.getSession(false));
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
         return "redirect:/cart";
     }
 
@@ -107,10 +118,13 @@ public class ItemController {
     }
 
     @PostMapping("/confirm-checkout")
-    public String confirmCheckout(@ModelAttribute("cart") Cart cart, RedirectAttributes redirectAttributes) {
+    public String confirmCheckout(
+            @ModelAttribute("cart") Cart cart,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
         List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
         try {
-            this.productService.handleUpdateCartBeforeCheckout(cartDetails);
+            this.productService.handleUpdateCartBeforeCheckout(cartDetails, getCurrentUser(request).getId());
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
             return "redirect:/cart";
@@ -173,6 +187,35 @@ public class ItemController {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/product/" + id;
+    }
+
+    private String buildProductJsonLd(Product product) {
+        Map<String, Object> jsonLd = new LinkedHashMap<>();
+        jsonLd.put("@context", "https://schema.org");
+        jsonLd.put("@type", "Product");
+        jsonLd.put("name", product.getName());
+        jsonLd.put("brand", product.getFactory());
+        jsonLd.put("image", "/images/product/" + product.getImage());
+        jsonLd.put("description", product.getShortDesc());
+
+        Map<String, Object> offer = new LinkedHashMap<>();
+        offer.put("@type", "Offer");
+        offer.put("priceCurrency", "VND");
+        offer.put("price", product.getPrice());
+        offer.put("availability", product.getQuantity() > 0
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock");
+        jsonLd.put("offers", offer);
+
+        try {
+            return objectMapper.writeValueAsString(jsonLd)
+                    .replace("<", "\\u003c")
+                    .replace(">", "\\u003e")
+                    .replace("&", "\\u0026")
+                    .replace("'", "\\u0027");
+        } catch (JsonProcessingException ex) {
+            return "{}";
+        }
     }
 
     @GetMapping("/products")

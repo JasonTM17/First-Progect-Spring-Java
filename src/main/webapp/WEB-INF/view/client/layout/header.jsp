@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="__path" value="${requestScope['javax.servlet.forward.request_uri']}" />
+<c:set var="__path" value="${pageContext.request.requestURI}" />
 
 <header class="ls-header ls-header--retail" id="lsHeader">
     <div class="ls-benefit-strip" aria-label="Cam kết mua hàng">
@@ -67,13 +67,13 @@
 
                         <div class="ls-user-wrap" data-dd>
                             <button type="button" class="ls-user" data-dd-toggle aria-haspopup="true" aria-expanded="false">
-                                <img class="ls-user__avatar" src="/images/avatar/${sessionScope.avatar}" alt="" onerror="this.src='https://ui-avatars.com/api/?name=${sessionScope.fullName}&background=d70018&color=fff'" />
+                                <img class="ls-user__avatar" src="/images/avatar/${fn:escapeXml(sessionScope.avatar)}" alt="" onerror="this.onerror=null;this.src='/client/img/avatar.jpg'" />
                                 <span class="d-none d-md-inline"><c:out value="${sessionScope.fullName}" /></span>
                                 <i class="bi bi-chevron-down small"></i>
                             </button>
                             <div class="ls-user-dropdown" role="menu">
                                 <div class="ls-user-card">
-                                    <img src="/images/avatar/${sessionScope.avatar}" alt="" onerror="this.src='https://ui-avatars.com/api/?name=${sessionScope.fullName}&background=d70018&color=fff&size=144'" />
+                                    <img src="/images/avatar/${fn:escapeXml(sessionScope.avatar)}" alt="" onerror="this.onerror=null;this.src='/client/img/avatar.jpg'" />
                                     <div class="ls-user-card__name"><c:out value="${sessionScope.fullName}" /></div>
                                     <span>Thành viên Laptopshop</span>
                                 </div>

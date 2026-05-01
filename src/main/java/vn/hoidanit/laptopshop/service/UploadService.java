@@ -23,6 +23,7 @@ public class UploadService {
             "image/webp",
             "image/gif"
     );
+    private static final long MAX_IMAGE_SIZE_BYTES = 5L * 1024L * 1024L;
 
     private final ServletContext servletContext;
 
@@ -74,6 +75,9 @@ public class UploadService {
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_IMAGE_TYPES.contains(contentType.toLowerCase())) {
             throw new IllegalArgumentException("Chỉ hỗ trợ file ảnh JPG, PNG, WEBP hoặc GIF");
+        }
+        if (file.getSize() > MAX_IMAGE_SIZE_BYTES) {
+            throw new IllegalArgumentException("Ảnh tải lên không được vượt quá 5MB");
         }
     }
 

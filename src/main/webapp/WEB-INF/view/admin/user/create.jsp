@@ -35,6 +35,7 @@
         </header>
 
         <form:form method="post" action="/admin/user/create" modelAttribute="newUser" enctype="multipart/form-data" id="userForm">
+            <c:set var="errorAvatar"><form:errors path="avatar" cssClass="invalid-feedback d-block" /></c:set>
             <div class="la-form-layout">
                 <div>
                     <section class="la-form-section">
@@ -107,16 +108,17 @@
 
                     <section class="la-form-section">
                         <h3 class="la-form-section__title">Ảnh đại diện</h3>
-                        <p class="la-form-section__desc">PNG, JPG tối đa 5MB</p>
+                        <p class="la-form-section__desc">PNG, JPG, WEBP hoặc GIF tối đa 5MB</p>
                         <div class="la-uploader">
-                            <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg" name="hoidanitFile" />
+                            <input type="file" id="avatarFile" accept=".png,.jpg,.jpeg,.webp,.gif" name="hoidanitFile" />
                             <div class="la-uploader__placeholder">
                                 <div class="la-uploader__icon"><i class="bi bi-cloud-arrow-up"></i></div>
                                 <p class="la-uploader__title">Kéo & thả ảnh hoặc nhấp để chọn</p>
-                                <p class="la-uploader__desc">PNG / JPG / JPEG</p>
+                                <p class="la-uploader__desc">PNG / JPG / JPEG / WEBP / GIF</p>
                             </div>
                             <img class="la-uploader__preview" id="avatarPreview" alt="" />
                         </div>
+                        ${errorAvatar}
                     </section>
                 </div>
             </div>
