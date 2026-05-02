@@ -44,7 +44,7 @@ This removes the unprotected-branch warning while still keeping the repo practic
 
 ## Container Package
 
-Publish the portfolio image to Docker Hub for reviewer-friendly pulls. The workflow can also keep GHCR as a secondary package, but Docker Hub is the public portfolio registry.
+Publish the portfolio image to Docker Hub for reviewer-friendly pulls. Docker Hub is the public portfolio registry for this project.
 
 | Field | Value |
 | --- | --- |

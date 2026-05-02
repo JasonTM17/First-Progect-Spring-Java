@@ -26,7 +26,7 @@ This release focuses on the GitHub portfolio presentation: a recruiter-first REA
 - GitHub hero replaced with a shorter SVG that avoids clipped text in GitHub dark/light mode.
 - New imagegen-based `docs/screenshots/github-social-preview.jpg` asset prepared for repository social preview under GitHub's 1 MB upload limit.
 - Repository identity standardized as `laptopshop-spring-boot-mvc`.
-- Docker Hub publishing added for `nguyenson1710/laptopshop-spring-boot-mvc`; GHCR remains available as a secondary registry when needed.
+- Docker Hub publishing added for `nguyenson1710/laptopshop-spring-boot-mvc`.
 - Release/checklist docs updated for `v1.0.2 Visual Portfolio Polish`.
 
 ### Verification
