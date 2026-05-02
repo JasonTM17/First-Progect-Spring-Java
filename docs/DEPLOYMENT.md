@@ -43,6 +43,8 @@ Published portfolio image:
 docker pull nguyenson1710/laptopshop-spring-boot-mvc:latest
 ```
 
+The official container registry for this project is Docker Hub under `nguyenson1710`. Do not use legacy GitHub Packages/GHCR pull paths for reviewer demos.
+
 Run the image with environment variables:
 
 ```powershell

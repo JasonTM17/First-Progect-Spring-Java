@@ -28,6 +28,8 @@ Pull the published portfolio image after the Docker Hub workflow runs:
 docker pull nguyenson1710/laptopshop-spring-boot-mvc:latest
 ```
 
+Use Docker Hub for published-image testing. GitHub Packages/GHCR is not the official registry for this project.
+
 Validate Docker Compose syntax:
 
 ```powershell

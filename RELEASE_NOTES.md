@@ -25,8 +25,8 @@ This release focuses on the GitHub portfolio presentation: a recruiter-first REA
 - README first viewport redesigned around quick review: pitch, badges, demo accounts, reviewer route, quick start, screenshots, and collapsed deep docs.
 - GitHub hero replaced with a shorter SVG that avoids clipped text in GitHub dark/light mode.
 - New imagegen-based `docs/screenshots/github-social-preview.jpg` asset prepared for repository social preview under GitHub's 1 MB upload limit.
-- Repository identity standardized as `laptopshop-spring-boot-mvc`.
-- Docker Hub publishing added for `nguyenson1710/laptopshop-spring-boot-mvc`.
+- Repository links documented against the actual public repo `JasonTM17/Laptopshop_Spring_Boot_MVC`.
+- Docker Hub publishing added for the official image `nguyenson1710/laptopshop-spring-boot-mvc`.
 - Release/checklist docs updated for `v1.0.2 Visual Portfolio Polish`.
 
 ### Verification
@@ -42,6 +42,7 @@ GitHub verification targets:
 
 - Latest `master` Actions run is green.
 - Docker Hub shows `nguyenson1710/laptopshop-spring-boot-mvc`.
+- GitHub Packages/GHCR is not the official container channel.
 - Branch protection is enabled for `master` with the `Test and package` status check.
 - Open pull request count is `0`.
 - Latest release is `Laptopshop v1.0.2 Visual Portfolio Polish`.

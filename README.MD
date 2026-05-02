@@ -2,9 +2,9 @@
 
 ![Laptopshop GitHub hero](docs/screenshots/github-hero.png)
 
-[![CI](https://github.com/JasonTM17/laptopshop-spring-boot-mvc/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/JasonTM17/laptopshop-spring-boot-mvc/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/JasonTM17/laptopshop-spring-boot-mvc/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/JasonTM17/laptopshop-spring-boot-mvc/actions/workflows/codeql.yml)
-[![Release](https://img.shields.io/github/v/release/JasonTM17/laptopshop-spring-boot-mvc?label=release)](https://github.com/JasonTM17/laptopshop-spring-boot-mvc/releases)
+[![CI](https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC/actions/workflows/codeql.yml)
+[![Release](https://img.shields.io/github/v/release/JasonTM17/Laptopshop_Spring_Boot_MVC?label=release)](https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC/releases)
 ![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.14-6DB33F?logo=springboot&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
@@ -22,7 +22,7 @@ Built for recruiter review and technical screening: the first minute shows the p
 | Storefront and catalog | `/` -> `/products` -> `/product/1` |
 | Customer flow | login as customer -> `/cart` -> `/checkout` -> `/order-history` |
 | Admin flow | login as admin -> `/admin` -> products, users, orders |
-| Test, CI, container | [GitHub Actions](https://github.com/JasonTM17/laptopshop-spring-boot-mvc/actions), [Docker Hub image](https://hub.docker.com/r/nguyenson1710/laptopshop-spring-boot-mvc), and `.\mvnw.cmd package` |
+| Test, CI, container | [GitHub Actions](https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC/actions), [Docker Hub image](https://hub.docker.com/r/nguyenson1710/laptopshop-spring-boot-mvc), and `.\mvnw.cmd package` |
 | Setup in 3 minutes | [INSTALLATION.md](INSTALLATION.md) |
 
 ## Demo Accounts
@@ -37,8 +37,8 @@ The `local` profile seeds demo roles, accounts, products, a customer cart, and o
 ## Quick Start
 
 ```powershell
-git clone https://github.com/JasonTM17/laptopshop-spring-boot-mvc.git
-cd laptopshop-spring-boot-mvc
+git clone https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC.git
+cd Laptopshop_Spring_Boot_MVC
 
 docker compose up --build
 ```
@@ -48,6 +48,9 @@ Container image:
 ```powershell
 docker pull nguyenson1710/laptopshop-spring-boot-mvc:latest
 ```
+
+Official source repository: `JasonTM17/Laptopshop_Spring_Boot_MVC`.
+Official container image: `nguyenson1710/laptopshop-spring-boot-mvc` on Docker Hub.
 
 Open:
 

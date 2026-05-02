@@ -14,6 +14,8 @@ Use this when preparing Laptopshop for GitHub, LinkedIn, or a live demo.
 - Fill GitHub About with the short description from `docs/GITHUB_REPO_SETUP.md`.
 - Publish the `v1.0.2` source release using `docs/GITHUB_REPO_SETUP.md`.
 - Confirm the Docker Hub package `nguyenson1710/laptopshop-spring-boot-mvc` is published from `.github/workflows/container.yml`.
+- Confirm the README and docs point to source repo `JasonTM17/Laptopshop_Spring_Boot_MVC` and Docker Hub image `nguyenson1710/laptopshop-spring-boot-mvc`.
+- Remove any legacy GitHub Packages/GHCR package so reviewers cannot copy a stale `ghcr.io/jasontm17/...` pull command.
 - Protect `master` with the lightweight status-check rule from `docs/GITHUB_REPO_SETUP.md`.
 - Link a live demo only after production env vars are configured.
 

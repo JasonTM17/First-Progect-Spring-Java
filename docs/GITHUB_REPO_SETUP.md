@@ -6,10 +6,16 @@ Use this checklist when publishing the recruiter-facing GitHub presentation for 
 
 | Field | Value |
 | --- | --- |
-| Owner/repo | `JasonTM17/laptopshop-spring-boot-mvc` |
+| Owner/repo | `JasonTM17/Laptopshop_Spring_Boot_MVC` |
 | Visibility | Public |
 | Default branch | `master` |
 | Website | Leave blank until a real live demo exists |
+
+Naming note:
+
+- GitHub source repository: `JasonTM17/Laptopshop_Spring_Boot_MVC`
+- Docker Hub image namespace: `nguyenson1710/laptopshop-spring-boot-mvc`
+- Do not document or promote `ghcr.io/jasontm17/...`; any old GitHub Packages/GHCR package is legacy and should be removed from the repo package sidebar.
 
 Repository description:
 
@@ -76,7 +82,7 @@ Release body:
 ```markdown
 ## Laptopshop v1.0.2 Visual Portfolio Polish
 
-This release polishes Laptopshop as a recruiter-first Spring Boot MVC portfolio: cleaner GitHub presentation, imagegen-based README/social visuals with deterministic typography, concise repo metadata, protected default branch, Docker Hub package, and updated source release.
+This release polishes Laptopshop as a recruiter-first Spring Boot MVC portfolio: cleaner GitHub presentation, imagegen-based README/social visuals with deterministic typography, concise repo metadata, protected default branch, Docker Hub image, and updated source release.
 
 ### Highlights
 
@@ -85,7 +91,7 @@ This release polishes Laptopshop as a recruiter-first Spring Boot MVC portfolio:
 - Admin dashboard with real metrics, charts, low-stock activity, status validation, and CSV export.
 - Production-minded setup with profiles, env vars, Docker, Render blueprint, health endpoint, sitemap, robots, cache headers, and CI.
 - Recruiter-friendly README with quick review path, demo accounts, screenshots, docs map, and concise technical proof.
-- Docker Hub package published for `nguyenson1710/laptopshop-spring-boot-mvc`.
+- Docker Hub image published for `nguyenson1710/laptopshop-spring-boot-mvc`.
 
 ### Verification
 
@@ -103,7 +109,7 @@ This release polishes Laptopshop as a recruiter-first Spring Boot MVC portfolio:
 
 ## Verification Checklist
 
-- Repo URL is `https://github.com/JasonTM17/laptopshop-spring-boot-mvc`.
+- Repo URL is `https://github.com/JasonTM17/Laptopshop_Spring_Boot_MVC`.
 - Sidebar About description is short enough to scan.
 - Topics render in the intended recruiter-friendly order.
 - Website field is blank.
@@ -120,12 +126,11 @@ This release polishes Laptopshop as a recruiter-first Spring Boot MVC portfolio:
 ## Optional CLI Reference
 
 ```powershell
-gh repo edit JasonTM17/Laptopshop_SpringBoot_MVC `
-  --rename laptopshop-spring-boot-mvc `
+gh repo edit JasonTM17/Laptopshop_Spring_Boot_MVC `
   --description "Spring Boot MVC laptop e-commerce portfolio with retail storefront, checkout, admin dashboard, tests, Docker, and CI." `
   --homepage ""
 
-gh repo edit JasonTM17/laptopshop-spring-boot-mvc `
+gh repo edit JasonTM17/Laptopshop_Spring_Boot_MVC `
   --add-topic spring-boot `
   --add-topic spring-mvc `
   --add-topic spring-security `

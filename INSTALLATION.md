@@ -55,6 +55,8 @@ Published container image:
 docker pull nguyenson1710/laptopshop-spring-boot-mvc:latest
 ```
 
+This Docker Hub image is the official published container for Laptopshop. The source repository remains `JasonTM17/Laptopshop_Spring_Boot_MVC`.
+
 ## Demo Accounts
 
 - Admin: `admin@laptopshop.dev` / `Admin@123`
